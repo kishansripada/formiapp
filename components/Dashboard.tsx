@@ -10,10 +10,11 @@ export default function Dashboard({ session, setPerformanceOpen }) {
    const fetchData = useCallback(async () => {
       setRefreshing(true);
 
-      // Simulating an API call with a timeout
+      // gets all the users dances
       supabase
          .from("dances")
          .select("*")
+         // filter by their user id
          .eq("user", session.user.id)
          .then((r) => {
             setMyDances(r.data);
@@ -22,6 +23,7 @@ export default function Dashboard({ session, setPerformanceOpen }) {
    }, []);
 
    useEffect(() => {
+      // on mount, run the fetch data function that gets all the dances
       fetchData();
    }, []);
 

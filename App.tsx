@@ -9,10 +9,6 @@ import { View } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { Buffer } from "buffer";
 global.Buffer = Buffer;
-import * as Linking from "expo-linking";
-
-import { Text } from "react-native";
-// global.Buffer = require("buffer").Buffer;
 
 export default function App() {
    const [session, setSession] = useState<Session | null>(null);
