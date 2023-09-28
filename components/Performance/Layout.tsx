@@ -2,14 +2,17 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
-import { makeRedirectUri, startAsync } from "expo-auth-session";
+import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types"
+import { Grid } from "./Grid";
+import { FluidGrid } from "./FluidGrid";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
    const [selectedFormation, setSelectedFormation] = useState<string>("");
-   const [cloudSettings, setCloudSettings] = useState({});
+   // const [cloudSettings, setCloudSettings] = useState({});
+   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [loading, setLoading] = useState(false);
 
    const fetchData = useCallback(async () => {
@@ -37,6 +40,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    return (
       <>
+      {cloudSettings ?
          <View style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
@@ -47,7 +51,34 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={styles.text}>{danceName}</Text>
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
+            <View style={styles.body}>
+               <View style={styles.debug}>
+                  <Text style={styles.text}> {cloudSettings?.stageDimensions.width} </Text>
+                  <Text style={styles.text}> {cloudSettings?.stageDimensions.height} </Text>
+               </View>
+               <View 
+               style={{
+                  flexDirection: "column",
+                  width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
+                  height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
+                  backgroundColor: "#262626",
+                  alignItems: "center",
+                  borderColor: '#dc2f79',
+                  borderWidth: 6,
+                  borderRadius: 10,
+                  justifyContent: "space-evenly"
+               }}
+               >
+                  {
+                     cloudSettings?.stageBackground == "grid" ? <Grid performanceOpen={performanceOpen}/> 
+                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid performanceOpen={performanceOpen}/> 
+                     : <></>
+                  }
+               </View>
+            </View>
          </View>
+         : <></>
+      }
       </>
    );
 }
@@ -65,6 +96,32 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: 56,
       paddingBottom: 20,
+   },
+   body: {
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 2,
+      flexGrow: 1,
+   },
+   debug: {
+      flexDirection: "row",
+      borderRadius: 2,
+   },
+   stage: {
+      flexDirection: "column",
+      width: '75%',
+      height: '30%',
+      backgroundColor: "#262626",
+      alignItems: "center",
+      borderColor: '#dc2f79',
+      borderWidth: 6,
+      borderRadius: 10,
+      justifyContent: "space-evenly"
+   },
+   test: {
+      fontSize: 60,
+      color: '#FFFFFF',
    },
    touchable: {
       flex: 1 / 4,
