@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshCo
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 
-export const VerticalGridLines = ({ performanceOpen }) => {
+export const GridText = ({ performanceOpen }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [loading, setLoading] = useState(false);
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
@@ -46,6 +46,9 @@ export const VerticalGridLines = ({ performanceOpen }) => {
                lineArray.map((number, index) => {
                   return (
                      <View style={index % cloudSettings?.gridSubdivisions == 0 ? styles.boldLine : styles.line} key={index}>  
+                        <Text style={styles.text}>
+                           Item {index}
+                        </Text>
                      </View>
                   )
                })

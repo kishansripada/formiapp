@@ -57,18 +57,19 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   <Text style={styles.text}> {cloudSettings?.stageDimensions.height} </Text>
                </View>
                <View 
-               style={{
-                  flexDirection: "column",
-                  width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
-                  height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
-                  backgroundColor: "#262626",
-                  alignItems: "center",
-                  borderColor: '#dc2f79',
-                  borderWidth: 6,
-                  borderRadius: 10,
-                  justifyContent: "space-evenly"
-               }}
+                  style={{
+                     flexDirection: "column",
+                     width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
+                     height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
+                     backgroundColor: "#262626",
+                     alignItems: "center",
+                     borderColor: '#dc2f79',
+                     borderWidth: 6,
+                     borderRadius: 10,
+                     justifyContent: "space-evenly"
+                  }}
                >
+                  
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid performanceOpen={performanceOpen}/> 
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid performanceOpen={performanceOpen}/> 
@@ -135,4 +136,9 @@ const styles = StyleSheet.create({
    emptyText: {
       flex: 1 / 4,
    },
+   line: {
+      borderColor: '#dc2f79',
+      borderWidth: 6,
+      borderRadius: 10,
+   }
 });

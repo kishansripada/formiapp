@@ -33,6 +33,7 @@ export const Grid = ({ performanceOpen }) => {
       {
         cloudSettings ? 
         <View style={styles.container}>
+            {/* <Text style={styles.text}>Grid</Text> */}
             <HorizontalGridLines performanceOpen={performanceOpen}/>
             <VerticalGridLines performanceOpen={performanceOpen}/>
         </View>
@@ -44,7 +45,7 @@ export const Grid = ({ performanceOpen }) => {
 
 const styles = StyleSheet.create({
     container: {
-        position: "absolute",
+      //   position: "absolute",
         flex: 1,
         flexDirection: "column",
         width: "100%",

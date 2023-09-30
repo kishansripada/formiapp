@@ -6,7 +6,8 @@ import { cloudSettings } from "../../lib/types"
 export const HorizontalGridLines = ({ performanceOpen }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [loading, setLoading] = useState(false);
-   const [test, setTest] = useState([0, 0, 0])
+   const [lineArray, setLineArray] = useState([10, 20, 30, 40])
+   // const lineArray = [10, 20, 30]
 
    const fetchData = useCallback(async () => {
       setLoading(true);
@@ -25,26 +26,30 @@ export const HorizontalGridLines = ({ performanceOpen }) => {
 
    useEffect(() => {
       fetchData();
-      console.log(Array(cloudSettings?.stageDimensions.height % 2 == 0 ? (cloudSettings?.stageDimensions.height - 1) : cloudSettings?.stageDimensions.height))
    }, []);
+   
+   useEffect(() => {
+      const arrLen = cloudSettings?.stageDimensions.height % 2 == 0 ? (cloudSettings?.stageDimensions.height - 1) : cloudSettings?.stageDimensions.height
+      const tempArray = Array(arrLen).fill(0)
+      setLineArray(tempArray)
+   }, [cloudSettings]);
+
+   // useEffect(() => {
+   //    console.log(lineArray)
+   // }, [lineArray])
 
    return (
       <>
       {
         cloudSettings ? 
         <View style={styles.container}>
-            <Text style={styles.text}>hi</Text>
-            <Text>{(Array(cloudSettings?.stageDimensions.height % 2 == 0 ? (cloudSettings?.stageDimensions.height - 1) : cloudSettings?.stageDimensions.height))}</Text>
             {
-                Array(cloudSettings?.stageDimensions.height % 2 == 0 ? (cloudSettings?.stageDimensions.height - 1) : cloudSettings?.stageDimensions.height).map((number, index) => {
-                   return <Text key={index}>Hi</Text>
-                    // <View
-                    //     style={{
-                    //         borderBottomColor: 'black',
-                    //         borderBottomWidth: StyleSheet.hairlineWidth,
-                    //     }}
-                    // />
-                })
+               lineArray.map((number, index) => {
+                  return (
+                    <View style={index % cloudSettings?.gridSubdivisions == 0 ? styles.boldLine : styles.line} key={index}>  
+                     </View>
+                  )
+               })
             }
         </View>
         : <></>
@@ -60,13 +65,26 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         height: "100%",
+        justifyContent: "space-evenly",
     },
    text: {
       fontWeight: "bold",
-      fontSize: 20,
+      fontSize: 100,
       textAlign: "center",
-      flex: 1 / 2,
-      color: '#000000',
+      flex: 1,
+      color: '#00FFFF',
    },
+   line: {
+      borderColor: '#414141',
+      borderWidth: 1,
+      borderRadius: 0,
+      height: 0,
+   },
+   boldLine: {
+      borderColor: '#525252',
+      borderWidth: 2,
+      borderRadius: 0,
+      height: 0,
+   }
 });
 
