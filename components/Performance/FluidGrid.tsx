@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
+import { VerticalFluidLines } from "./VerticalFluidLines";
+import { HorizontalFluidLines } from "./HorizontalFluidLines";
+import { EvenGridText } from "./EvenGridText";
 
 export const FluidGrid = ({ performanceOpen }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
@@ -29,7 +32,9 @@ export const FluidGrid = ({ performanceOpen }) => {
    return (
       <>
          <View style={styles.container}>
-            <Text style={styles.text}>{cloudSettings?.stageBackground}</Text>
+            <HorizontalFluidLines performanceOpen={performanceOpen}/>
+            <VerticalFluidLines performanceOpen={performanceOpen}/>
+            {/* <EvenGridText performanceOpen={performanceOpen}/> */}
          </View>
       </>
    );

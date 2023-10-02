@@ -57,17 +57,11 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   <Text style={styles.text}> {cloudSettings?.stageDimensions.height} </Text>
                </View>
                <View 
-                  style={{
-                     flexDirection: "column",
-                     width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
-                     height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
-                     backgroundColor: "#262626",
-                     alignItems: "center",
-                     borderColor: '#db2877',
-                     borderWidth: 4,
-                     borderRadius: 10,
-                     justifyContent: "space-evenly",
-                  }}
+                  style={[{
+                        width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
+                        height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
+                     }, styles.stage
+                  ]}
                >
                   
                   {
@@ -111,13 +105,11 @@ const styles = StyleSheet.create({
    },
    stage: {
       flexDirection: "column",
-      width: '75%',
-      height: '30%',
       backgroundColor: "#262626",
       alignItems: "center",
       borderColor: '#dc2f79',
-      borderWidth: 6,
-      borderRadius: 10,
+      borderWidth: 4,
+      borderRadius: 20,
       justifyContent: "space-evenly"
    },
    test: {
