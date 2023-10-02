@@ -33,8 +33,8 @@ export const Dancers = ({ performanceOpen }) => {
       if (!coords) return null;
       let { x, y } = coords;
       return {
-         left: (PIXELS_PER_SQUARE * cloudSettings.stageDimensions.width) / 2 + PIXELS_PER_SQUARE * x,
-         top: (PIXELS_PER_SQUARE * cloudSettings.stageDimensions.height) / 2 + PIXELS_PER_SQUARE * -y,
+         left: ((PIXELS_PER_SQUARE * cloudSettings.stageDimensions.width) / 2) + PIXELS_PER_SQUARE * (x - .9),
+         top: ((PIXELS_PER_SQUARE * cloudSettings.stageDimensions.height) / 2) + PIXELS_PER_SQUARE * (-1 * (y + .7)),
       };
    };
 
@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
    },
    dancer: {
       position: "absolute",
-      alignItems: "center"
+      alignItems: "center",
+      alignContent: "center",
    },
    name: {
       color: '#FFFFFF',

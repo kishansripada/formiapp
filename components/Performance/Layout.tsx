@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types"
+import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
 import { Grid } from "./Grid";
 import { FluidGrid } from "./FluidGrid";
 import { Dancers } from "./Dancers";
@@ -13,7 +13,15 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [danceName, setDanceName] = useState<string>("");
    const [selectedFormation, setSelectedFormation] = useState<string>("");
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
+   const [timeline, setTimeline] = useState(1);
    const [loading, setLoading] = useState(false);
+   
+   const fetchTimelineLength = () => {
+      const timelineLength = formations.reduce((accumulator, object) => {
+         return accumulator + object.durationSeconds;
+       }, 0);
+      setTimeline(timelineLength)
+   }
 
    const fetchData = useCallback(async () => {
       setLoading(true);
@@ -38,6 +46,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       fetchData();
    }, []);
 
+   useEffect(() => {
+      fetchTimelineLength();
+   }, [formations]);
+
    return (
       <>
       {cloudSettings ?
@@ -52,10 +64,6 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
-               <View style={styles.debug}>
-                  <Text style={styles.text}> {cloudSettings?.stageDimensions.width} </Text>
-                  <Text style={styles.text}> {cloudSettings?.stageDimensions.height} </Text>
-               </View>
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
@@ -69,6 +77,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      : <></>
                   }
                   <Dancers performanceOpen={performanceOpen}/>
+               </View>
+               
+               <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}>
+
                </View>
             </View>
          </View>
@@ -110,7 +122,8 @@ const styles = StyleSheet.create({
       borderColor: '#dc2f79',
       borderWidth: 4,
       borderRadius: 20,
-      justifyContent: "space-evenly"
+      justifyContent: "space-evenly",
+      marginBottom: 80,
    },
    test: {
       fontSize: 60,
@@ -132,5 +145,14 @@ const styles = StyleSheet.create({
       borderColor: '#dc2f79',
       borderWidth: 6,
       borderRadius: 10,
+   },
+   timeline: {
+      height: 120,
+      flexDirection: "row",
+      backgroundColor: "#262626",
+      borderColor: '#dc2f79',
+      alignItems: "flex-start",
+      borderWidth: 4,
+      borderRadius: 20,
    }
 });
