@@ -4,6 +4,7 @@ import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 import { HorizontalGridLines } from "./HorizontalGridLines"
 import { VerticalGridLines } from "./VerticalGridLines"
+import { EvenGridText } from "./EvenGridText";
 
 export const Grid = ({ performanceOpen }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
@@ -33,9 +34,13 @@ export const Grid = ({ performanceOpen }) => {
       {
         cloudSettings ? 
         <View style={styles.container}>
-            {/* <Text style={styles.text}>Grid</Text> */}
             <HorizontalGridLines performanceOpen={performanceOpen}/>
             <VerticalGridLines performanceOpen={performanceOpen}/>
+            {
+               cloudSettings?.stageDimensions.width % 2 == 0 ? 
+                  <EvenGridText performanceOpen={performanceOpen}/>
+               : <></>
+            }
         </View>
         : <></>
       }
@@ -50,6 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         height: "100%",
+        justifyContent: "flex-end",
     },
    text: {
       fontWeight: "bold",

@@ -63,10 +63,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
                      backgroundColor: "#262626",
                      alignItems: "center",
-                     borderColor: '#dc2f79',
-                     borderWidth: 6,
+                     borderColor: '#db2877',
+                     borderWidth: 4,
                      borderRadius: 10,
-                     justifyContent: "space-evenly"
+                     justifyContent: "space-evenly",
                   }}
                >
                   

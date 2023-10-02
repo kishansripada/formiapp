@@ -46,8 +46,14 @@ export const HorizontalGridLines = ({ performanceOpen }) => {
             {
                lineArray.map((number, index) => {
                   return (
-                    <View style={index % cloudSettings?.gridSubdivisions == 0 ? styles.boldLine : styles.line} key={index}>  
-                     </View>
+                     <View 
+                        style=
+                           {[
+                              index % cloudSettings?.gridSubdivisions == Math.floor(lineArray.length / 2) % cloudSettings?.gridSubdivisions ? styles.boldLine : styles.line,
+                              cloudSettings?.stageDimensions.height % 2 == 1 ? styles.marginLine : styles.empty,
+                           ]} 
+                        key={index}
+                     />
                   )
                })
             }
@@ -85,6 +91,10 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 0,
       height: 0,
-   }
+   },
+   marginLine: {
+      marginVertical: 20,
+   },
+   empty: {},
 });
 

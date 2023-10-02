@@ -45,8 +45,30 @@ export const VerticalGridLines = ({ performanceOpen }) => {
             {
                lineArray.map((number, index) => {
                   return (
-                     <View style={index % cloudSettings?.gridSubdivisions == 0 ? styles.boldLine : styles.line} key={index}>  
+                     // <View style={styles.lineContainer}>
+                     <View>
+                        {/* {
+                           index % 2 == 1 ?  (
+                              <Text style={[
+                                 {position: "absolute", width: 40, paddingRight: 100},
+                                 styles.text
+                              ]}>
+                                 {index}
+                              </Text>
+                           ) : <View style={{position: "absolute"}}/>
+                        } */}
+                        <View 
+                           style=
+                              {[
+                                 // {position: "absolute"},
+                                 index % cloudSettings?.gridSubdivisions == Math.floor(lineArray.length / 2) % cloudSettings?.gridSubdivisions ? styles.boldLine : styles.line, 
+                                 cloudSettings?.stageDimensions.width % 2 == 1 ? styles.marginLine : styles.empty,
+                              ]} 
+                           key={index}
+                        />
+
                      </View>
+                     // </View>
                   )
                })
             }
@@ -83,6 +105,10 @@ const styles = StyleSheet.create({
       borderColor: '#525252',
       borderWidth: 2,
       height: "100%",
-      width: 0
-   }
+      width: 0,
+   },
+   marginLine: {
+      marginHorizontal: 20,
+   },
+   empty: {},
 });
