@@ -1,11 +1,26 @@
 import { useState } from "react";
 import { Alert, StyleSheet, View, Button, TextInput, Text } from "react-native";
 import { supabase, supabaseUrl } from "../lib/supabase";
-import { makeRedirectUri, startAsync } from "expo-auth-session";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+// import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
 
 export default function Auth() {
    const [loading, setLoading] = useState(false);
+
+   const extractParamsFromUrl = (url: string) => {
+      const params = new URLSearchParams(url.split("#")[1]);
+         const data = {
+            access_token: params.get("access_token"),
+            expires_in: parseInt(params.get("expires_in") || "0"),
+            refresh_token: params.get("refresh_token"),
+            token_type: params.get("token_type"),
+            provider_token: params.get("provider_token"),
+         };
+      
+         return data;
+      };
 
    async function signInWithEmail() {
       setLoading(true);
@@ -25,15 +40,36 @@ export default function Auth() {
       //       emailRedirectTo: redirectURL,
       //    },
       // })
-      const authResponse = await startAsync({
-         authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUrl}`,
-         returnUrl: redirectUrl,
-      });
 
-      if (authResponse.type === "success") {
+      // const getGoogleOAuthUrl = async (): Promise<string | null> => {
+      //       const result = await supabase.auth.signInWithOAuth({
+      //        provider: "google",
+      //        options: {
+      //           redirectTo: "mysupabaseapp://google-auth",
+      //         },
+      //       });
+            
+      //       return result.data.url;
+      //    };
+
+      // const authResponse = await AuthSession.promptAsync({
+      //    authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUrl}`,
+      //    returnUrl: redirectUrl,
+      // });
+
+      const result = await WebBrowser.openAuthSessionAsync(
+         `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUrl}`,
+             redirectUrl,
+                {
+                  showInRecents: true,
+                }
+              );
+
+      if (result.type === "success") {
+         const data = extractParamsFromUrl(result.url);
          supabase.auth.setSession({
-            access_token: authResponse.params.access_token,
-            refresh_token: authResponse.params.refresh_token,
+            access_token: data.access_token,
+            refresh_token: data.refresh_token,
          });
       }
 
