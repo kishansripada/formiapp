@@ -1,17 +1,17 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types"
 import { Grid } from "./Grid";
 import { FluidGrid } from "./FluidGrid";
+import { Dancers } from "./Dancers";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
    const [selectedFormation, setSelectedFormation] = useState<string>("");
-   // const [cloudSettings, setCloudSettings] = useState({});
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [loading, setLoading] = useState(false);
 
@@ -63,12 +63,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      }, styles.stage
                   ]}
                >
-                  
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid performanceOpen={performanceOpen}/> 
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid performanceOpen={performanceOpen}/> 
                      : <></>
                   }
+                  <Dancers performanceOpen={performanceOpen}/>
                </View>
             </View>
          </View>

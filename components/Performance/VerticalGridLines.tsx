@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 

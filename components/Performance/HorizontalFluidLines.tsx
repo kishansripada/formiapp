@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 
@@ -7,7 +7,6 @@ export const HorizontalFluidLines = ({ performanceOpen }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [loading, setLoading] = useState(false);
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
-   // const lineArray = [10, 20, 30]
 
    const fetchData = useCallback(async () => {
       setLoading(true);
@@ -90,9 +89,5 @@ const styles = StyleSheet.create({
       borderRadius: 0,
       height: 0,
    },
-   marginLine: {
-      marginVertical: 20,
-   },
-   empty: {},
 });
 
