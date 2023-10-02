@@ -34,9 +34,6 @@ export const HorizontalGridLines = ({ performanceOpen }) => {
       setLineArray(tempArray)
    }, [cloudSettings]);
 
-   // useEffect(() => {
-   //    console.log(lineArray)
-   // }, [lineArray])
 
    return (
       <>

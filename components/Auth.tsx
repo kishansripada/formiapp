@@ -18,7 +18,7 @@ export default function Auth() {
       const redirectUrl = "formi://auth/callback";
 
       // let redirectURL = Linking.createURL("/auth/callback");
-      // console.log(redirectURL);
+      // (redirectURL);
       // const { data, error } = await supabase.auth.signInWithOtp({
       //    email: "kishansripada@gmail.com",
       //    options: {

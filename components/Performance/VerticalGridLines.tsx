@@ -33,10 +33,6 @@ export const VerticalGridLines = ({ performanceOpen }) => {
       setLineArray(tempArray)
    }, [cloudSettings]);
 
-   // useEffect(() => {
-   //    console.log(lineArray)
-   // }, [lineArray])
-
    return (
       <>
       {
@@ -46,7 +42,7 @@ export const VerticalGridLines = ({ performanceOpen }) => {
                lineArray.map((number, index) => {
                   return (
                      // <View style={styles.lineContainer}>
-                     <View>
+                     <View key={index}>
                         {/* {
                            index % 2 == 1 ?  (
                               <Text style={[

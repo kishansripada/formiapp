@@ -29,16 +29,12 @@ export const EvenGridText = ({ performanceOpen }) => {
 
    useEffect(() => {
       const arrLen = cloudSettings?.stageDimensions.width % 2 == 0 ? (cloudSettings?.stageDimensions.width - 1) : cloudSettings?.stageDimensions.width
-      console.log(arrLen) 
+
       const newArrLen = arrLen ? Math.floor(arrLen / 2) : 0
-      // console.log(newArrLen)
       const tempArray = Array(newArrLen).fill(0)
       setLineArray(tempArray)
    }, [cloudSettings]);
 
-   // useEffect(() => {
-   //    console.log(lineArray)
-   // }, [lineArray])
 
    return (
       <>
@@ -62,7 +58,7 @@ export const EvenGridText = ({ performanceOpen }) => {
                            // {position: "absolute"}
                            // cloudSettings?.stageDimensions.width % 2 == 1 ? styles.margin : styles.empty
                      ]}>
-                        {Math.abs(index - Math.floor(lineArray.length / 2))}
+                        {2 * Math.abs(index - Math.floor(lineArray.length / 2))}
                      </Text>
                   ) : (
                      // <View 
@@ -76,7 +72,7 @@ export const EvenGridText = ({ performanceOpen }) => {
                            // {position: "absolute"}
                            // cloudSettings?.stageDimensions.width % 2 == 1 ? styles.margin : styles.empty
                      ]}>
-                        {Math.abs(index - Math.floor(lineArray.length / 2))}
+                        {2 * Math.abs(index - Math.floor(lineArray.length / 2))}
                      </Text>
                   )
                })
