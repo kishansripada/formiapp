@@ -79,6 +79,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   <Dancers performanceOpen={performanceOpen}/>
                </View>
                
+               <Text style={styles.text}>Dance Player</Text>
                <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}>
 
                </View>
