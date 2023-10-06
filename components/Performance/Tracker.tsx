@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 
-export const Timeline = ({ performanceOpen, curSecond }) => {
+export const Tracker = ({ performanceOpen, curSecond }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [formations, setFormations] = useState([]);
    const [selectedFormation, setSelectedFormation] = useState<formation>();
@@ -32,29 +32,19 @@ export const Timeline = ({ performanceOpen, curSecond }) => {
       fetchData();
    }, []);
 
+   const secondsToPosition = ( seconds: number ) => {
+        return (seconds * PIXELS_PER_SECOND);
+    };
 
    return (
       <>
       {
         cloudSettings ? 
         <View style={styles.container}>
-            {
-                formations.map((formation) => {
-                    return (
-                        <View 
-                            key={formation.id}
-                            style={[
-                                styles.formation,
-                                { width: PIXELS_PER_SECOND * formation.durationSeconds }
-                            ]}
-                        >
-                            <Text style={styles.text}>
-                                {formation.name}
-                            </Text>
-                        </View>
-                    )
-                })
-            }
+            <View style={[
+                    styles.line,
+                    { left:  secondsToPosition(curSecond) }
+                ]}/>
         </View>
         : <></>
       }
@@ -69,8 +59,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "100%",
         height: "100%",
-        justifyContent: "space-evenly",
-        alignItems: "center",
     },
     text: {
         margin: 10,
@@ -80,14 +68,11 @@ const styles = StyleSheet.create({
         flex: 1,
         color: '#FFFFFF',
     },
-    formation: {
-        borderWidth: 2,
+    line: {
+        width: 0,
         borderColor: '#dc2f79',
-        borderRadius: 20,
-        backgroundColor: "#262626",
-        alignItems: "flex-start",
-        height: "80%",
-        flexDirection: "column",
-   },
+        borderWidth: 2,
+        height: "100%",
+   }
 });
 

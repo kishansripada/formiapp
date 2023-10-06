@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
+import { cloudSettings, formation } from "../../lib/types"
+import { Icon } from '@rneui/themed';
 
-export const Timeline = ({ performanceOpen, curSecond }) => {
+
+export const PlayButton = ({ performanceOpen, curSecond }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [formations, setFormations] = useState([]);
    const [selectedFormation, setSelectedFormation] = useState<formation>();
@@ -38,23 +40,7 @@ export const Timeline = ({ performanceOpen, curSecond }) => {
       {
         cloudSettings ? 
         <View style={styles.container}>
-            {
-                formations.map((formation) => {
-                    return (
-                        <View 
-                            key={formation.id}
-                            style={[
-                                styles.formation,
-                                { width: PIXELS_PER_SECOND * formation.durationSeconds }
-                            ]}
-                        >
-                            <Text style={styles.text}>
-                                {formation.name}
-                            </Text>
-                        </View>
-                    )
-                })
-            }
+            {/* <Icon name='material'></Icon> */}
         </View>
         : <></>
       }
@@ -69,25 +55,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "100%",
         height: "100%",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-    },
-    text: {
-        margin: 10,
-        fontWeight: "bold",
-        fontSize: 20,
-        textAlign: "center",
-        flex: 1,
-        color: '#FFFFFF',
-    },
-    formation: {
-        borderWidth: 2,
-        borderColor: '#dc2f79',
-        borderRadius: 20,
-        backgroundColor: "#262626",
-        alignItems: "flex-start",
-        height: "80%",
-        flexDirection: "column",
-   },
+    }
 });
 

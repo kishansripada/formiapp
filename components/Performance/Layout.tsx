@@ -6,6 +6,9 @@ import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/t
 import { Grid } from "./Grid";
 import { FluidGrid } from "./FluidGrid";
 import { Dancers } from "./Dancers";
+import { Timeline } from "./Timeline";
+import { Tracker } from "./Tracker";
+import { PlayButton } from "./PlayButton";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -14,6 +17,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [selectedFormation, setSelectedFormation] = useState<string>("");
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(1);
+   const [curSecond, setSecond] = useState(0);
    const [loading, setLoading] = useState(false);
    
    const fetchTimelineLength = () => {
@@ -78,10 +82,23 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   }
                   <Dancers performanceOpen={performanceOpen}/>
                </View>
-               
-               <Text style={styles.text}>Dance Player</Text>
-               <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}>
-
+                  
+               <View style={styles.player}>
+                  <Text style={styles.text}>Dance Player</Text>
+                  <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}>
+                     <PlayButton 
+                        performanceOpen={performanceOpen}
+                        curSecond={curSecond}
+                     />
+                     <Timeline 
+                        performanceOpen={performanceOpen}
+                        curSecond={curSecond}
+                     />
+                     <Tracker 
+                        performanceOpen={performanceOpen}
+                        curSecond={curSecond}
+                     />
+                  </View>
                </View>
             </View>
          </View>
@@ -137,7 +154,6 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
-      flex: 1 / 2,
    },
    emptyText: {
       flex: 1 / 4,
@@ -148,6 +164,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
+      marginTop: 20,
       height: 120,
       flexDirection: "row",
       backgroundColor: "#262626",
@@ -155,5 +172,8 @@ const styles = StyleSheet.create({
       alignItems: "flex-start",
       borderWidth: 4,
       borderRadius: 20,
+   },
+   player: {
+
    }
 });
