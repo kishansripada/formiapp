@@ -35,12 +35,10 @@ export const Grid = ({ performanceOpen }) => {
         cloudSettings ? 
         <View style={styles.container}>
             <HorizontalGridLines performanceOpen={performanceOpen}/>
-            <VerticalGridLines performanceOpen={performanceOpen}/>
-            {/* {
-               cloudSettings?.stageDimensions.width % 2 == 0 ? 
-                  <EvenGridText performanceOpen={performanceOpen}/>
-               : <></>
-            } */}
+            <VerticalGridLines performanceOpen={performanceOpen}/>    
+            <EvenGridText performanceOpen={performanceOpen}/>
+
+            
         </View>
         : <></>
       }
