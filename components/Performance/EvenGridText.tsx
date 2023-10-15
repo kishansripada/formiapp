@@ -39,22 +39,46 @@ export const EvenGridText = ({ performanceOpen }) => {
    return (
       <>
       {
+       
         cloudSettings ? 
+        <>
         <View style={{
             flexDirection: "row",
-            width: (cloudSettings?.stageDimensions.width - 2) * PIXELS_PER_SQUARE,
-            height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
-            borderWidth: 4,
+            width: "100%",
+            height: "100%",
+            position: 'absolute',
+            // borderWidth: 4,
             alignSelf: "center",
             justifyContent: "center",
          }}>
-            {
+              <Text style={{
+                     textAlign: 'center',                 // text-center
+                     fontSize: 30,                     
+                     color: 'rgba(255, 255, 255, 0.3)',   
+                     fontWeight: '800',                   // font-extrabold
+                     letterSpacing: 2,     
+                     // backgroundColor: 'red'               // approximation for tracking-widest, adjust as needed
+                  }}
+               >
+                  BACKSTAGE
+               </Text>
+        </View>
+        {/* <View style={{
+            flexDirection: "row",
+            width: (cloudSettings?.stageDimensions.width - 2) * PIXELS_PER_SQUARE,
+            position: 'absolute',
+            // borderWidth: 4,
+            alignSelf: "center",
+            justifyContent: "center",
+            // backgroundColor: "red"
+         }}>
+             {
                lineArray.map((number, index) => {
                   return (index % 2 == 0) ? (
                      <Text key={index} 
                         style={[
                            styles.text, 
-                           {borderWidth: 2}
+                           // {borderWidth: 2}
                            // {position: "absolute"}
                            // cloudSettings?.stageDimensions.width % 2 == 1 ? styles.margin : styles.empty
                      ]}>
@@ -68,7 +92,7 @@ export const EvenGridText = ({ performanceOpen }) => {
                      <Text key={index} 
                         style={[
                            styles.text, 
-                           {borderWidth: 2}
+                           // {borderWidth: 2}
                            // {position: "absolute"}
                            // cloudSettings?.stageDimensions.width % 2 == 1 ? styles.margin : styles.empty
                      ]}>
@@ -76,9 +100,13 @@ export const EvenGridText = ({ performanceOpen }) => {
                      </Text>
                   )
                })
-            }
-        </View>
+         }
+
+         </View> */}
+        
+         </>
         : <></>
+        
       }
       </>
    );
@@ -118,3 +146,7 @@ const styles = StyleSheet.create({
    },
    empty: {}
 });
+
+
+
+

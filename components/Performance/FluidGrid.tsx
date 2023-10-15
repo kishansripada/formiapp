@@ -34,7 +34,7 @@ export const FluidGrid = ({ performanceOpen }) => {
          <View style={styles.container}>
             <HorizontalFluidLines performanceOpen={performanceOpen}/>
             <VerticalFluidLines performanceOpen={performanceOpen}/>
-            {/* <EvenGridText performanceOpen={performanceOpen}/> */}
+            <EvenGridText performanceOpen={performanceOpen}/>
          </View>
       </>
    );

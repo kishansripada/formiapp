@@ -1,13 +1,15 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings } from "../../lib/types"
-import { HorizontalGridLines } from "./HorizontalGridLines"
-import { VerticalGridLines } from "./VerticalGridLines"
-import { EvenGridText } from "./EvenGridText";
+import { cloudSettings, formation } from "../../lib/types"
+import { Icon } from '@rneui/themed';
 
-export const Grid = ({ performanceOpen }) => {
+
+export const PlayButton = ({ performanceOpen, curSecond }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
+   const [formations, setFormations] = useState([]);
+   const [selectedFormation, setSelectedFormation] = useState<formation>();
+   const [dancers, setDancers] = useState([]);
    const [loading, setLoading] = useState(false);
 
    const fetchData = useCallback(async () => {
@@ -21,6 +23,9 @@ export const Grid = ({ performanceOpen }) => {
          .single()
          .then((r) => {
             setCloudSettings(r.data.settings);
+            setFormations(r.data.formations);
+            setSelectedFormation(r.data.formations[0]);
+            setDancers(r.data.dancers);
             setLoading(false);
          });
    }, []);
@@ -29,16 +34,13 @@ export const Grid = ({ performanceOpen }) => {
       fetchData();
    }, []);
 
+
    return (
       <>
       {
         cloudSettings ? 
         <View style={styles.container}>
-            <HorizontalGridLines performanceOpen={performanceOpen}/>
-            <VerticalGridLines performanceOpen={performanceOpen}/>    
-            <EvenGridText performanceOpen={performanceOpen}/>
-
-            
+            {/* <Icon name='material'></Icon> */}
         </View>
         : <></>
       }
@@ -48,18 +50,11 @@ export const Grid = ({ performanceOpen }) => {
 
 const styles = StyleSheet.create({
     container: {
-      //   position: "absolute",
+        position: "absolute",
         flex: 1,
-        flexDirection: "column",
+        flexDirection: "row",
         width: "100%",
         height: "100%",
-        justifyContent: "flex-end",
-    },
-   text: {
-      fontWeight: "bold",
-      fontSize: 20,
-      textAlign: "center",
-      flex: 1 / 2,
-      color: '#FFFFFF',
-   },
+    }
 });
+

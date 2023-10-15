@@ -22,7 +22,7 @@ export const Dancers = ({ performanceOpen }) => {
          .then((r) => {
             setCloudSettings(r.data.settings);
             setFormations(r.data.formations);
-            setSelectedFormation(r.data.formations[0]);
+            setSelectedFormation(r.data.formations[1]);
             setDancers(r.data.dancers);
             setLoading(false);
          });
