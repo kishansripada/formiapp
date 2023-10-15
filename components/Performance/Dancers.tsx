@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
 
-export const Dancers = ({ performanceOpen }) => {
+export const Dancers = ({ performanceOpen, curSecond }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [formations, setFormations] = useState([]);
    const [selectedFormation, setSelectedFormation] = useState<formation>();
@@ -22,7 +22,7 @@ export const Dancers = ({ performanceOpen }) => {
          .then((r) => {
             setCloudSettings(r.data.settings);
             setFormations(r.data.formations);
-            setSelectedFormation(r.data.formations[1]);
+            setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setLoading(false);
          });
@@ -41,6 +41,20 @@ export const Dancers = ({ performanceOpen }) => {
    useEffect(() => {
       fetchData();
    }, []);
+
+   useEffect(() => {
+      if (cloudSettings) {
+         var timeElapsed = curSecond;
+         var formationID = 0;
+         
+         while (timeElapsed > formations[formationID]?.durationSeconds && formationID < formations.length) {
+            timeElapsed -= formations[formationID]?.durationSeconds
+            formationID++;
+         }
+         
+         setSelectedFormation(formations[formationID]) 
+      }
+   }, [curSecond])
 
    // useEffect(() => {
    //    console.log(selectedFormation?.positions)

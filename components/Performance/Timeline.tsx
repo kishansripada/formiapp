@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 
@@ -37,24 +37,24 @@ export const Timeline = ({ performanceOpen, curSecond }) => {
       <>
       {
         cloudSettings ? 
-        <View style={styles.container}>
-            {
-                formations.map((formation) => {
-                    return (
-                        <View 
-                            key={formation.id}
-                            style={[
-                                styles.formation,
-                                { width: PIXELS_PER_SECOND * formation.durationSeconds }
-                            ]}
-                        >
-                            <Text style={styles.text}>
-                                {formation.name}
-                            </Text>
-                        </View>
-                    )
-                })
-            }
+        <View style={styles.container} >
+                {
+                    formations.map((formation) => {
+                        return (
+                            <View 
+                                key={formation.id}
+                                style={[
+                                    styles.formation,
+                                    { width: PIXELS_PER_SECOND * formation.durationSeconds }
+                                ]}
+                            >
+                                <Text style={styles.text}>
+                                    {formation.name}
+                                </Text>
+                            </View>
+                        )
+                    })
+                }
         </View>
         : <></>
       }

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 
-export const Tracker = ({ performanceOpen, curSecond }) => {
+export const Tracker = ({ performanceOpen, curSecond, position, setPosition }) => {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [formations, setFormations] = useState([]);
    const [selectedFormation, setSelectedFormation] = useState<formation>();
@@ -36,6 +36,11 @@ export const Tracker = ({ performanceOpen, curSecond }) => {
         return (seconds * PIXELS_PER_SECOND);
     };
 
+   useEffect(() => {
+      const curPosition = secondsToPosition(curSecond);
+      setPosition(curPosition);
+   }, [curSecond])
+
    return (
       <>
       {
@@ -43,7 +48,7 @@ export const Tracker = ({ performanceOpen, curSecond }) => {
         <View style={styles.container}>
             <View style={[
                     styles.line,
-                    { left:  secondsToPosition(curSecond) }
+                    { left:  position }
                 ]}/>
         </View>
         : <></>
