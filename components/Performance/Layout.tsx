@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TouchableHighlight } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
@@ -19,6 +19,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [timeline, setTimeline] = useState(1);
    const [curSecond, setSecond] = useState(0);
    const [loading, setLoading] = useState(false);
+   const [position, setPosition] = useState(0);
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -26,6 +27,13 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
        }, 0);
       setTimeline(timelineLength)
    }
+
+   const updateTimeline = (event) => {
+      // setPosition(event.nativeEvent.locationX)
+      const timelineWidth = (PIXELS_PER_SECOND * timeline)
+      const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
+      setSecond(newSecond);
+ }
 
    const fetchData = useCallback(async () => {
       setLoading(true);
@@ -80,25 +88,34 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid performanceOpen={performanceOpen}/> 
                      : <></>
                   }
-                  <Dancers performanceOpen={performanceOpen}/>
+                  <Dancers performanceOpen={performanceOpen} curSecond={curSecond}/>
                </View>
                   
                <View style={styles.player}>
                   <Text style={styles.text}>Dance Player</Text>
-                  <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}>
-                     <PlayButton 
-                        performanceOpen={performanceOpen}
-                        curSecond={curSecond}
-                     />
-                     <Timeline 
-                        performanceOpen={performanceOpen}
-                        curSecond={curSecond}
-                     />
-                     <Tracker 
-                        performanceOpen={performanceOpen}
-                        curSecond={curSecond}
-                     />
-                  </View>
+                  <PlayButton 
+                     performanceOpen={performanceOpen}
+                     curSecond={curSecond}
+                     setSecond={setSecond}
+                     timeline={timeline}
+                  />
+                  <TouchableHighlight 
+                     style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}
+                     onPress={updateTimeline}
+                  >
+                     <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.innerView]}>
+                        <Timeline 
+                           performanceOpen={performanceOpen}
+                           curSecond={curSecond}
+                        />
+                        <Tracker 
+                           performanceOpen={performanceOpen}
+                           curSecond={curSecond}
+                           position={position}
+                           setPosition={setPosition}
+                        />
+                     </View>
+                  </TouchableHighlight>
                </View>
             </View>
          </View>
@@ -164,7 +181,6 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
-      marginTop: 20,
       height: 120,
       flexDirection: "row",
       backgroundColor: "#262626",
@@ -172,8 +188,16 @@ const styles = StyleSheet.create({
       alignItems: "flex-start",
       borderWidth: 4,
       borderRadius: 20,
+      position: "relative",
+   },
+   innerView: {
+      height: "100%",
+      flexDirection: "row",
+      borderColor: '#dc2f79',
+      alignItems: "flex-start",
    },
    player: {
-
-   }
+      flexDirection: "column",
+      alignItems: "center",
+   },
 });
