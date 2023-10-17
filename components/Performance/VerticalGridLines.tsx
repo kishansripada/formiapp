@@ -3,29 +3,9 @@ import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 
-export const VerticalGridLines = ({ performanceOpen }) => {
-   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
-   const [loading, setLoading] = useState(false);
+export const VerticalGridLines = ({cloudSettings, performanceOpen }) => {
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
 
-   const fetchData = useCallback(async () => {
-      setLoading(true);
-
-      // gets the dance that is currenlty open based on the id in performanceOpen
-      supabase
-         .from("dances")
-         .select("*")
-         .eq("id", performanceOpen)
-         .single()
-         .then((r) => {
-            setCloudSettings(r.data.settings);
-            setLoading(false);
-         });
-   }, []);
-
-   useEffect(() => {
-      fetchData();
-   }, []);
 
    useEffect(() => {
       const arrLen = cloudSettings?.stageDimensions.width % 2 == 0 ? (cloudSettings?.stageDimensions.width - 1) : cloudSettings?.stageDimensions.width

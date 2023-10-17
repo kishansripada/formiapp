@@ -47,7 +47,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .then((r) => {
             setCloudSettings(r.data.settings);
             setFormations(r.data.formations);
-            setSelectedFormation(r.data.formations[0].id);
+            setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
             setLoading(false);
@@ -84,16 +84,17 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   ]}
                >
                   {
-                     cloudSettings?.stageBackground == "grid" ? <Grid performanceOpen={performanceOpen}/> 
-                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid performanceOpen={performanceOpen}/> 
+                     cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
+                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
                      : <></>
                   }
-                  <Dancers performanceOpen={performanceOpen} curSecond={curSecond}/>
+                  <Dancers selectedFormation={selectedFormation} setSelectedFormation={setSelectedFormation} dancers={dancers}formations={formations} cloudSettings={cloudSettings} performanceOpen={performanceOpen} curSecond={curSecond}/>
                </View>
                   
                <View style={styles.player}>
                   <Text style={styles.text}>Dance Player</Text>
                   <PlayButton 
+                     cloudSettings={cloudSettings}
                      performanceOpen={performanceOpen}
                      curSecond={curSecond}
                      setSecond={setSecond}
@@ -105,10 +106,13 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   >
                      <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.innerView]}>
                         <Timeline 
+                           cloudSettings={cloudSettings}
+                           formations={formations}
                            performanceOpen={performanceOpen}
                            curSecond={curSecond}
                         />
                         <Tracker 
+                           cloudSettings={cloudSettings}
                            performanceOpen={performanceOpen}
                            curSecond={curSecond}
                            position={position}
