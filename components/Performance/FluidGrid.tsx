@@ -6,35 +6,16 @@ import { VerticalFluidLines } from "./VerticalFluidLines";
 import { HorizontalFluidLines } from "./HorizontalFluidLines";
 import { EvenGridText } from "./EvenGridText";
 
-export const FluidGrid = ({ performanceOpen }) => {
-   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
+export const FluidGrid = ({cloudSettings, performanceOpen }) => {
    const [loading, setLoading] = useState(false);
 
-   const fetchData = useCallback(async () => {
-      setLoading(true);
-
-      // gets the dance that is currenlty open based on the id in performanceOpen
-      supabase
-         .from("dances")
-         .select("*")
-         .eq("id", performanceOpen)
-         .single()
-         .then((r) => {
-            setCloudSettings(r.data.settings);
-            setLoading(false);
-         });
-   }, []);
-
-   useEffect(() => {
-      fetchData();
-   }, []);
 
    return (
       <>
          <View style={styles.container}>
-            <HorizontalFluidLines performanceOpen={performanceOpen}/>
-            <VerticalFluidLines performanceOpen={performanceOpen}/>
-            <EvenGridText performanceOpen={performanceOpen}/>
+            <HorizontalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <VerticalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <EvenGridText cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
          </View>
       </>
    );

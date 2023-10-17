@@ -3,29 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
 
-export const HorizontalFluidLines = ({ performanceOpen }) => {
-   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
-   const [loading, setLoading] = useState(false);
+export const HorizontalFluidLines = ({cloudSettings, performanceOpen }) => {
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
-
-   const fetchData = useCallback(async () => {
-      setLoading(true);
-
-      // gets the dance that is currenlty open based on the id in performanceOpen
-      supabase
-         .from("dances")
-         .select("*")
-         .eq("id", performanceOpen)
-         .single()
-         .then((r) => {
-            setCloudSettings(r.data.settings);
-            setLoading(false);
-         });
-   }, []);
-
-   useEffect(() => {
-      fetchData();
-   }, []);
    
    useEffect(() => {
       const boldLinesCount = cloudSettings?.horizontalGridSubdivisions
