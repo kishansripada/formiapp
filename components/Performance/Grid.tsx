@@ -6,39 +6,15 @@ import { HorizontalGridLines } from "./HorizontalGridLines"
 import { VerticalGridLines } from "./VerticalGridLines"
 import { EvenGridText } from "./EvenGridText";
 
-export const Grid = ({ performanceOpen }) => {
-   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
-   const [loading, setLoading] = useState(false);
-
-   const fetchData = useCallback(async () => {
-      setLoading(true);
-
-      // gets the dance that is currenlty open based on the id in performanceOpen
-      supabase
-         .from("dances")
-         .select("*")
-         .eq("id", performanceOpen)
-         .single()
-         .then((r) => {
-            setCloudSettings(r.data.settings);
-            setLoading(false);
-         });
-   }, []);
-
-   useEffect(() => {
-      fetchData();
-   }, []);
-
+export const Grid = ({cloudSettings, performanceOpen }) => {
    return (
       <>
       {
         cloudSettings ? 
         <View style={styles.container}>
-            <HorizontalGridLines performanceOpen={performanceOpen}/>
-            <VerticalGridLines performanceOpen={performanceOpen}/>    
-            <EvenGridText performanceOpen={performanceOpen}/>
-
-            
+            <HorizontalGridLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <VerticalGridLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>    
+            <EvenGridText cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
         </View>
         : <></>
       }

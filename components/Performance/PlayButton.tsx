@@ -6,12 +6,7 @@ import { cloudSettings, formation } from "../../lib/types"
 
 
 
-export const PlayButton = ({ performanceOpen, curSecond, setSecond, timeline }) => {
-   const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
-   const [formations, setFormations] = useState([]);
-   const [selectedFormation, setSelectedFormation] = useState<formation>();
-   const [dancers, setDancers] = useState([]);
-   const [loading, setLoading] = useState(false);
+export const PlayButton = ({cloudSettings, performanceOpen, curSecond, setSecond, timeline }) => {
    const [playing, setPlaying] = useState(false);
    const [intervalID, setIntervalID] = useState(null);
 
@@ -28,28 +23,6 @@ export const PlayButton = ({ performanceOpen, curSecond, setSecond, timeline }) 
    const handlePlay = () => {
       setPlaying(!playing)
    }
-
-   const fetchData = useCallback(async () => {
-      setLoading(true);
-
-      // gets the dance that is currenlty open based on the id in performanceOpen
-      supabase
-         .from("dances")
-         .select("*")
-         .eq("id", performanceOpen)
-         .single()
-         .then((r) => {
-            setCloudSettings(r.data.settings);
-            setFormations(r.data.formations);
-            setSelectedFormation(r.data.formations[0]);
-            setDancers(r.data.dancers);
-            setLoading(false);
-         });
-   }, []);
-
-   useEffect(() => {
-      fetchData();
-   }, []);
 
    useEffect(() => {
       if (!playing) {
