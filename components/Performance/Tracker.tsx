@@ -3,11 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 
-export const Tracker = ({cloudSettings, performanceOpen, curSecond, position, setPosition }) => {
+export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond }) => {
 
 
    const secondsToPosition = ( seconds: number ) => {
-        return (seconds * PIXELS_PER_SECOND);
+        return (seconds * pixelsPerSecond);
     };
 
    useEffect(() => {

@@ -6,7 +6,7 @@ import { cloudSettings, formation } from "../../lib/types"
 
 
 
-export const PlayButton = ({cloudSettings, performanceOpen, curSecond, setSecond, timeline }) => {
+export const PlayButton = ({cloudSettings, curSecond, setSecond, timeline }) => {
    const [playing, setPlaying] = useState(false);
    const [intervalID, setIntervalID] = useState(null);
 
