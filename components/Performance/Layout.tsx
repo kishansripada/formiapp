@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TouchableHighlight } from "react-native";
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TouchableHighlight, ScrollView} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
@@ -107,7 +107,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    return (
       <>
       {cloudSettings ?
-         <View style={styles.container}>
+         <ScrollView style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={32} height={32} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
@@ -171,7 +171,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   </TouchableHighlight>
                </View>
             </View>
-         </View>
+         </ScrollView>
          : <></>
       }
       </>
