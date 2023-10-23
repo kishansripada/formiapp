@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 
-export const Timeline = ({cloudSettings, formations, performanceOpen, curSecond }) => {
+export const Timeline = ({cloudSettings, formations, performanceOpen, pixelsPerSecond }) => {
 
    return (
       <>
@@ -17,7 +17,7 @@ export const Timeline = ({cloudSettings, formations, performanceOpen, curSecond 
                                 key={formation.id}
                                 style={[
                                     styles.formation,
-                                    { width: PIXELS_PER_SECOND * formation.durationSeconds }
+                                    { width: pixelsPerSecond * formation.durationSeconds }
                                 ]}
                             >
                                 <Text style={styles.text}>

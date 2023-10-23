@@ -29,7 +29,8 @@ export const HorizontalGridLines = ({cloudSettings, performanceOpen }) => {
                               cloudSettings?.stageDimensions.height % 2 == 1 ? styles.marginLine : styles.empty,
                            ]} 
                         key={index}
-                     />
+                     >
+                     </View>
                   )
                })
             }
