@@ -51,11 +51,12 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                            }, styles.dancer,
                         ]}
                      >
-                        <View style={[
+                     <View style={[
                            {
                               backgroundColor: curDancer[0]?.color,
                               height: pixelsPerSquare,
                               width: pixelsPerSquare,
+                              borderRadius: pixelsPerSquare / 2,
                            }, styles.dancerIcon]}/>
                         <Text style={[
                            {
@@ -101,7 +102,6 @@ const styles = StyleSheet.create({
    dancerIcon: {
       // width: 40,
       // height: 40,
-      borderRadius: 20,
    }
 });
 
