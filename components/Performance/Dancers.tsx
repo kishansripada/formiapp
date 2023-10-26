@@ -4,6 +4,58 @@ import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
 
 export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
+   // Moved all of the styling here so that we could use pixelsPerSquare in the styling
+   const styles = StyleSheet.create({
+      container: {
+          position: "absolute",
+          flex: 1,
+          flexDirection: "column",
+          width: "100%",
+          height: "100%",
+          justifyContent: "space-evenly",
+      },
+     text: {
+        fontWeight: "bold",
+        fontSize: 100,
+        textAlign: "center",
+        flex: 1,
+        color: '#00FFFF',
+     },
+     dancer: {
+        position: "absolute",
+        alignItems: "center",
+        alignContent: "center",
+     },
+     name: {
+        color: '#FFFFFF',
+        textAlign: "center",
+     },
+     dancerIconCircle: {
+        width: pixelsPerSquare,
+        height: pixelsPerSquare,
+        borderRadius: pixelsPerSquare / 2,
+     },
+     dancerIconSquare: {
+         width: pixelsPerSquare,
+         height: pixelsPerSquare,
+     },
+     dancerIconTriangle: {
+        width: 0,
+        height: 0,
+        backgroundColor: "solid",
+        borderStyle: "solid",
+        borderLeftWidth: pixelsPerSquare / 2,
+        borderRightWidth: pixelsPerSquare / 2,
+        borderBottomWidth: pixelsPerSquare,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+  
+      },
+  
+  
+  });
+  
+  
 
 
 
@@ -52,12 +104,13 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                         ]}
                      >
                      <View style={[
-                           {
-                              backgroundColor: curDancer[0]?.color,
-                              height: pixelsPerSquare,
-                              width: pixelsPerSquare,
-                              borderRadius: pixelsPerSquare / 2,
-                           }, styles.dancerIcon]}/>
+                          
+                              { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
+                              curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
+                              curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
+                              curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
+                              styles.dancerIconCircle 
+                     ]}/>
                         <Text style={[
                            {
                               fontSize: pixelsPerSquare * 2 / 3,
@@ -72,36 +125,4 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
       </>
    );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        flex: 1,
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-        justifyContent: "space-evenly",
-    },
-   text: {
-      fontWeight: "bold",
-      fontSize: 100,
-      textAlign: "center",
-      flex: 1,
-      color: '#00FFFF',
-   },
-   dancer: {
-      position: "absolute",
-      alignItems: "center",
-      alignContent: "center",
-   },
-   name: {
-      color: '#FFFFFF',
-      textAlign: "center",
-      // fontSize: 20,
-   },
-   dancerIcon: {
-      // width: 40,
-      // height: 40,
-   }
-});
 
