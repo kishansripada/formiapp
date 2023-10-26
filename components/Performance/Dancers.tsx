@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
 
-export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, performanceOpen, curSecond }) => {
+export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
 
 
 
@@ -11,8 +11,8 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
       if (!coords) return null;
       let { x, y } = coords;
       return {
-         left: ((PIXELS_PER_SQUARE * cloudSettings.stageDimensions.width) / 2) + PIXELS_PER_SQUARE * (x - .9),
-         top: ((PIXELS_PER_SQUARE * cloudSettings.stageDimensions.height) / 2) + PIXELS_PER_SQUARE * (-1 * (y + .7)),
+         left: ((pixelsPerSquare * cloudSettings.stageDimensions.width) / 2) + pixelsPerSquare * (x - .9),
+         top: ((pixelsPerSquare * cloudSettings.stageDimensions.height) / 2) + pixelsPerSquare * (-1 * (y + .7)),
       };
    };
 
@@ -53,13 +53,17 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                         ]}
                      >
                      <View style={[
+                          
                               { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
                               curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
                               curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
                               curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
                               styles.dancerIconCircle 
                      ]}/>
-                        <Text style={styles.name}>{curDancer[0]?.name.split(' ')[0]}</Text>
+                        <Text style={[
+                           {
+                              fontSize: pixelsPerSquare * 2 / 3,
+                           },styles.name]}>{curDancer[0]?.name.split(' ')[0]}</Text>
                      </View>
                   )
                }) : <></>
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
    name: {
       color: '#FFFFFF',
       textAlign: "center",
-      fontSize: 20,
+      // fontSize: 20,
    },
    dancerIconCircle: {
       width: 40,

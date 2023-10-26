@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TouchableHighlight } from "react-native";
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TouchableHighlight, ScrollView} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
@@ -16,9 +16,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [danceName, setDanceName] = useState<string>("");
    const [selectedFormation, setSelectedFormation] = useState<string>("");
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
-   const [timeline, setTimeline] = useState(1);
+   const [timeline, setTimeline] = useState(0);
    const [curSecond, setSecond] = useState(0);
+   const [pixelsPerSquare, setPixelsPerSquare] = useState(0);
+   const [pixelsPerSecond, setPixelsPerSecond] = useState(0);
    const [loading, setLoading] = useState(false);
+   const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
    
    const fetchTimelineLength = () => {
@@ -30,7 +33,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    const updateTimeline = (event) => {
       // setPosition(event.nativeEvent.locationX)
-      const timelineWidth = (PIXELS_PER_SECOND * timeline)
+      const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
       setSecond(newSecond);
  }
@@ -56,7 +59,46 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    useEffect(() => {
       fetchData();
+
+      Dimensions.addEventListener('change', ({window}) => {
+         if (cloudSettings && timeline) {            
+            const windowWidth = Dimensions.get('window').width;
+            const stageWidth = windowWidth * 3 / 4;
+            if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
+               const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+               setPixelsPerSquare(squarePixel);
+            } else {
+               const windowHeight = Dimensions.get('window').height;
+               const stageHeight = windowHeight * 1 / 2;
+               const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
+               setPixelsPerSquare(squarePixel);
+            }
+   
+            const secondPixel = Math.ceil(stageWidth / timeline);
+            setPixelsPerSecond(secondPixel);
+         }
+      })
    }, []);
+
+   useEffect(() => {
+      // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
+      if (cloudSettings && timeline) {            
+         const windowWidth = Dimensions.get('window').width;
+         const stageWidth = windowWidth * 3 / 4;
+         if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
+            const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+            setPixelsPerSquare(squarePixel);
+         } else {
+            const windowHeight = Dimensions.get('window').height;
+            const stageHeight = windowHeight * 1 / 2;
+            const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
+            setPixelsPerSquare(squarePixel);
+         }
+
+         const secondPixel = Math.ceil(stageWidth / timeline);
+         setPixelsPerSecond(secondPixel);
+      }
+   }, [cloudSettings, timeline]);
 
    useEffect(() => {
       fetchTimelineLength();
@@ -65,7 +107,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    return (
       <>
       {cloudSettings ?
-         <View style={styles.container}>
+         <ScrollView style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={32} height={32} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
@@ -78,8 +120,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             <View style={styles.body}>
                <View 
                   style={[{
-                        width: (cloudSettings?.stageDimensions.width) * PIXELS_PER_SQUARE,
-                        height: (cloudSettings?.stageDimensions.height) * PIXELS_PER_SQUARE,
+                        width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,
+                        height: (cloudSettings?.stageDimensions.height) * pixelsPerSquare,
                      }, styles.stage
                   ]}
                >
@@ -87,42 +129,49 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
                      : <></>
-                  }
-                  <Dancers selectedFormation={selectedFormation} setSelectedFormation={setSelectedFormation} dancers={dancers}formations={formations} cloudSettings={cloudSettings} performanceOpen={performanceOpen} curSecond={curSecond}/>
+                  } 
+                  <Dancers 
+                     selectedFormation={selectedFormation} 
+                     setSelectedFormation={setSelectedFormation} 
+                     dancers={dancers}
+                     formations={formations} 
+                     cloudSettings={cloudSettings} 
+                     curSecond={curSecond}
+                     pixelsPerSquare={pixelsPerSquare}
+                  />
                </View>
                   
                <View style={styles.player}>
                   <Text style={styles.text}>Dance Player</Text>
                   <PlayButton 
                      cloudSettings={cloudSettings}
-                     performanceOpen={performanceOpen}
                      curSecond={curSecond}
                      setSecond={setSecond}
                      timeline={timeline}
                   />
                   <TouchableHighlight 
-                     style={[{width: PIXELS_PER_SECOND * timeline}, styles.timeline]}
+                     style={[{width: pixelsPerSecond * timeline}, styles.timeline]}
                      onPress={updateTimeline}
                   >
-                     <View style={[{width: PIXELS_PER_SECOND * timeline}, styles.innerView]}>
+                     <View style={[{width: pixelsPerSecond * timeline}, styles.innerView]}>
                         <Timeline 
                            cloudSettings={cloudSettings}
                            formations={formations}
                            performanceOpen={performanceOpen}
-                           curSecond={curSecond}
+                           pixelsPerSecond={pixelsPerSecond}
                         />
                         <Tracker 
                            cloudSettings={cloudSettings}
-                           performanceOpen={performanceOpen}
                            curSecond={curSecond}
                            position={position}
                            setPosition={setPosition}
+                           pixelsPerSecond={pixelsPerSecond}
                         />
                      </View>
                   </TouchableHighlight>
                </View>
             </View>
-         </View>
+         </ScrollView>
          : <></>
       }
       </>
