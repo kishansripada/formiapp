@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types"
 
-export const EvenGridText = ({cloudSettings, performanceOpen }) => {
+export const EvenGridText = ({cloudSettings, performanceOpen, pixelsPerSquare }) => {
    // const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
 
@@ -34,7 +34,7 @@ export const EvenGridText = ({cloudSettings, performanceOpen }) => {
          }}>
               <Text style={{
                      textAlign: 'center',                 // text-center
-                     fontSize: 30,                     
+                     fontSize: pixelsPerSquare,        //maybe change later             
                      color: 'rgba(255, 255, 255, 0.3)',   
                      fontWeight: '800',                   // font-extrabold
                      letterSpacing: 2,     

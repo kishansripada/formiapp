@@ -6,7 +6,7 @@ import { HorizontalGridLines } from "./HorizontalGridLines"
 import { VerticalGridLines } from "./VerticalGridLines"
 import { EvenGridText } from "./EvenGridText";
 
-export const Grid = ({cloudSettings, performanceOpen }) => {
+export const Grid = ({cloudSettings, performanceOpen, pixelsPerSquare }) => {
    return (
       <>
       {
@@ -14,7 +14,7 @@ export const Grid = ({cloudSettings, performanceOpen }) => {
         <View style={styles.container}>
             <HorizontalGridLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
             <VerticalGridLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>    
-            <EvenGridText cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <EvenGridText cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/>
         </View>
         : <></>
       }
