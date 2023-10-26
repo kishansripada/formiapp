@@ -41,6 +41,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
+                  console.log(curDancer.shape)
                   return (
                      <View 
                         key={pos.id}
@@ -51,7 +52,13 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                            }, styles.dancer,
                         ]}
                      >
-                        <View style={[{backgroundColor: curDancer[0]?.color,}, styles.dancerIcon]}/>
+                     <View style={[
+                              { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
+                              curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
+                              curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
+                              curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
+                              styles.dancerIconCircle 
+                     ]}/>
                         <Text style={styles.name}>{curDancer[0]?.name.split(' ')[0]}</Text>
                      </View>
                   )
@@ -90,10 +97,28 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 20,
    },
-   dancerIcon: {
+   dancerIconCircle: {
       width: 40,
       height: 40,
       borderRadius: 20,
-   }
+   },
+   dancerIconSquare: {
+      width: 40,
+      height: 40,
+   },
+   dancerIconTriangle: {
+      width: 0,
+      height: 0,
+      backgroundColor: "solid",
+      borderStyle: "solid",
+      borderLeftWidth: 20,
+      borderRightWidth: 20,
+      borderBottomWidth: 40,
+      borderLeftColor: "transparent",
+      borderRightColor: "transparent",
+
+    },
+
+
 });
 
