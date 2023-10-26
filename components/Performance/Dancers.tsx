@@ -4,6 +4,58 @@ import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
 
 export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
+   // Moved all of the styling here so that we could use pixelsPerSquare in the styling
+   const styles = StyleSheet.create({
+      container: {
+          position: "absolute",
+          flex: 1,
+          flexDirection: "column",
+          width: "100%",
+          height: "100%",
+          justifyContent: "space-evenly",
+      },
+     text: {
+        fontWeight: "bold",
+        fontSize: 100,
+        textAlign: "center",
+        flex: 1,
+        color: '#00FFFF',
+     },
+     dancer: {
+        position: "absolute",
+        alignItems: "center",
+        alignContent: "center",
+     },
+     name: {
+        color: '#FFFFFF',
+        textAlign: "center",
+     },
+     dancerIconCircle: {
+        width: pixelsPerSquare,
+        height: pixelsPerSquare,
+        borderRadius: pixelsPerSquare / 2,
+     },
+     dancerIconSquare: {
+         width: pixelsPerSquare,
+         height: pixelsPerSquare,
+     },
+     dancerIconTriangle: {
+        width: 0,
+        height: 0,
+        backgroundColor: "solid",
+        borderStyle: "solid",
+        borderLeftWidth: pixelsPerSquare / 2,
+        borderRightWidth: pixelsPerSquare / 2,
+        borderBottomWidth: pixelsPerSquare,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+  
+      },
+  
+  
+  });
+  
+  
 
 
 
@@ -41,7 +93,6 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
-                  console.log(curDancer.shape)
                   return (
                      <View 
                         key={pos.id}
@@ -74,55 +125,4 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
       </>
    );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        flex: 1,
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-        justifyContent: "space-evenly",
-    },
-   text: {
-      fontWeight: "bold",
-      fontSize: 100,
-      textAlign: "center",
-      flex: 1,
-      color: '#00FFFF',
-   },
-   dancer: {
-      position: "absolute",
-      alignItems: "center",
-      alignContent: "center",
-   },
-   name: {
-      color: '#FFFFFF',
-      textAlign: "center",
-      // fontSize: 20,
-   },
-   dancerIconCircle: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-   },
-   dancerIconSquare: {
-      width: 40,
-      height: 40,
-   },
-   dancerIconTriangle: {
-      width: 0,
-      height: 0,
-      backgroundColor: "solid",
-      borderStyle: "solid",
-      borderLeftWidth: 20,
-      borderRightWidth: 20,
-      borderBottomWidth: 40,
-      borderLeftColor: "transparent",
-      borderRightColor: "transparent",
-
-    },
-
-
-});
 
