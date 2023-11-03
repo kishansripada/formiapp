@@ -119,7 +119,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
-               <View style={{ flex:0}}><MenuBar/></View> 
+               <View><MenuBar screenHeight = {Dimensions.get('window').height} screenWidth = {Dimensions.get('window').width}/></View> 
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,

@@ -2,8 +2,29 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MenuButton } from './MenuButton'; 
 
-export const MenuBar = () => {
-  let iconColor = 'pink';
+export const MenuBar = ({screenHeight, screenWidth}) => {
+  let buttonDim = screenWidth/12;
+  const styles = StyleSheet.create( {
+    // outerContainer: {
+    //   backgroundColor: 'transparent',
+    //   // Set the overall height, including the border
+    //   height: 80 + 10, // Height of MenuBar (80) + Border height (10)
+    // },
+    
+    menuBar: {
+      flexDirection: 'row', 
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+      width: screenWidth,
+      height: buttonDim,
+      backgroundColor: 'black',
+      // height: 70,
+      // flex: 1
+    },
+  
+  });
+  let iconColor = 'white';
+  let clickedColor = 'pink';
     // button svgs and labels
   const menuButtons = [
     { svg: 
@@ -48,7 +69,7 @@ export const MenuBar = () => {
       strokeLinejoin="round"
       d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"
     />
-  </svg>`, label: 'Media' },
+  </svg>`, label: 'Media'},
     {svg: 
     `<svg
         xmlns="http://www.w3.org/2000/svg"
@@ -97,33 +118,20 @@ export const MenuBar = () => {
   ];
 
   var buttonArray = menuButtons.map((button, idx) => (
-    <MenuButton key={idx} svg={button.svg}>
+    <MenuButton key={idx} svg={button.svg} buttonDim = {buttonDim} >
     {button.label}
     </MenuButton>));
+
+
   return (
-    <View style={styles.outerContainer}>
-        <View style={styles.menuBar}>
+        <View style={[styles.menuBar]}>
         {buttonArray}
         </View>
-    </View>
-  );
+
+   );
 };
 
-const styles = StyleSheet.create({
-  outerContainer: {
-    backgroundColor: 'transparent',
-    // Set the overall height, including the border
-    height: 80 + 10, // Height of MenuBar (80) + Border height (10)
-  },
-  menuBar: {
-    flexDirection: 'row', 
-    alignItems: 'center',
-    // backgroundColor: 'blue',
-    height: 70,
-    width: 420,
-  },
 
-});
 
 
 
