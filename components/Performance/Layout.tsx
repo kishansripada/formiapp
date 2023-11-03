@@ -155,6 +155,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   >
                      <View style={[{width: pixelsPerSecond * timeline}, styles.innerView]}>
                         <Timeline 
+                           selectedFormation={selectedFormation}
                            cloudSettings={cloudSettings}
                            formations={formations}
                            performanceOpen={performanceOpen}
