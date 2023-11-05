@@ -5,6 +5,7 @@ import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 // import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
+import React from "react";
 
 export default function Auth() {
    const [loading, setLoading] = useState(false);

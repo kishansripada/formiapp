@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings } from "../../lib/types"
+import { PIXELS_PER_SQUARE, cloudSettings } from "../../lib/types"
 import { VerticalFluidLines } from "./VerticalFluidLines";
 import { HorizontalFluidLines } from "./HorizontalFluidLines";
 import { EvenGridText } from "./EvenGridText";
+import React from "react";
 
 export const FluidGrid = ({cloudSettings, performanceOpen }) => {
    const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export const FluidGrid = ({cloudSettings, performanceOpen }) => {
          <View style={styles.container}>
             <HorizontalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
             <VerticalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
-            <EvenGridText cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <EvenGridText pixelsPerSquare={PIXELS_PER_SQUARE} cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
          </View>
       </>
    );
