@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
+import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types";
+import React from "react";
 
 export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
    // Moved all of the styling here so that we could use pixelsPerSquare in the styling

@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { Alert, StyleSheet, View, Button, TextInput, Text, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import { supabase, supabaseUrl } from "../lib/supabase";
-import { makeRedirectUri, startAsync } from "expo-auth-session";
+import { makeRedirectUri } from "expo-auth-session";
+import React from "react";
 
 export default function Dashboard({ session, setPerformanceOpen }) {
    const [myDances, setMyDances] = useState([]);
