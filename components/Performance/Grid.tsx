@@ -5,6 +5,7 @@ import { cloudSettings } from "../../lib/types"
 import { HorizontalGridLines } from "./HorizontalGridLines"
 import { VerticalGridLines } from "./VerticalGridLines"
 import { EvenGridText } from "./EvenGridText";
+import React from "react";
 
 export const Grid = ({cloudSettings, performanceOpen, pixelsPerSquare }) => {
    return (
