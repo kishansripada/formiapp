@@ -5,7 +5,7 @@ import { MenuButton } from './MenuButton';
 export const MenuBar = ({ screenWidth , screenHeight}) => {
   let horizontalMode = screenWidth > screenHeight;
   let buttonDim = 0;
-  let styles = StyleSheet.create({});
+  let styles = StyleSheet.create({menuBar: {}});
   if(horizontalMode){
     buttonDim = screenHeight / 12;
     styles = StyleSheet.create({
