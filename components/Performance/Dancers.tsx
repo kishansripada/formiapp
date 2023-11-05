@@ -5,6 +5,38 @@ import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types"
 
 export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
    // Moved all of the styling here so that we could use pixelsPerSquare in the styling
+   
+  
+  
+
+
+
+   const coordsToPosition = (coords: { x: number; y: number }) => {
+      if (!coords) return null;
+      let { x, y } = coords;
+      return {
+         left: ((pixelsPerSquare * cloudSettings.stageDimensions.width) / 2) + pixelsPerSquare * (x - .9),
+         top: ((pixelsPerSquare * cloudSettings.stageDimensions.height) / 2) + pixelsPerSquare * (-1 * (y + .7)),
+      };
+   };
+
+
+
+   useEffect(() => {
+      if (cloudSettings) {
+         var timeElapsed = curSecond;
+         var formationID = 0;
+         
+         while (timeElapsed > (formations[formationID]?.durationSeconds + formations[formationID]?.transition.durationSeconds) && formationID < formations.length) {
+            timeElapsed -= formations[formationID]?.durationSeconds
+            timeElapsed -= formations[formationID]?.transition.durationSeconds
+            formationID++;
+         }
+         
+         setSelectedFormation(formations[formationID]) 
+      }
+   }, [curSecond])
+
    const styles = StyleSheet.create({
       container: {
           position: "absolute",
@@ -54,37 +86,6 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
   
   
   });
-  
-  
-
-
-
-   const coordsToPosition = (coords: { x: number; y: number }) => {
-      if (!coords) return null;
-      let { x, y } = coords;
-      return {
-         left: ((pixelsPerSquare * cloudSettings.stageDimensions.width) / 2) + pixelsPerSquare * (x - .9),
-         top: ((pixelsPerSquare * cloudSettings.stageDimensions.height) / 2) + pixelsPerSquare * (-1 * (y + .7)),
-      };
-   };
-
-
-
-   useEffect(() => {
-      if (cloudSettings) {
-         var timeElapsed = curSecond;
-         var formationID = 0;
-         
-         while (timeElapsed > formations[formationID]?.durationSeconds && formationID < formations.length) {
-            timeElapsed -= formations[formationID]?.durationSeconds
-            formationID++;
-         }
-         
-         setSelectedFormation(formations[formationID]) 
-      }
-   }, [curSecond])
-
-
    return (
       <>
       {
@@ -124,5 +125,6 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
       }
       </>
    );
+   
 }
 

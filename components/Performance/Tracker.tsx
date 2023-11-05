@@ -24,6 +24,10 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
                     styles.line,
                     { left:  position }
                 ]}/>
+             <View style={[
+                    styles.triangle,
+                    { left:  position - 12.45}
+                ]}/>
         </View>
         : <></>
       }
@@ -52,6 +56,20 @@ const styles = StyleSheet.create({
         borderColor: '#dc2f79',
         borderWidth: 2,
         height: "100%",
-   }
+   },
+   triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: "solid",
+    borderStyle: "solid",
+    borderLeftWidth:  10,
+    borderRightWidth:  10,
+    borderBottomWidth: 20,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    transform: [{ rotate: "180deg" }],
+    borderBottomColor: '#dc2f79',
+
+  },
 });
 

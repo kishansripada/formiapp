@@ -27,7 +27,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
-         return accumulator + object.durationSeconds;
+         return accumulator + object.durationSeconds + object.transition.durationSeconds;
        }, 0);
       setTimeline(timelineLength)
    }
@@ -50,6 +50,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .single()
          .then((r) => {
             setCloudSettings(r.data.settings);
+            r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
@@ -159,6 +160,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   >
                      <View style={[{width: pixelsPerSecond * timeline}, styles.innerView]}>
                         <Timeline 
+                           selectedFormation={selectedFormation}
                            cloudSettings={cloudSettings}
                            formations={formations}
                            performanceOpen={performanceOpen}
@@ -228,6 +230,10 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
+      // numberOfLines is not doing anything 
+
+      textOverflow: [5, "hanging", "each-line"],
+      flexWrap: "wrap",
    },
    emptyText: {
       flex: 1 / 4,
