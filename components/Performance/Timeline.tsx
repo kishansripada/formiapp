@@ -20,18 +20,21 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
             return (
               <View
                 key={formation.id}
+
                 style={[
                   styles.formation,
                   {
-                    width: pixelsPerSecond * formation.durationSeconds,
+                    width: pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
                   },
                 ]}
               >
-                <View style={styles.textContainer}>
-                  <Text onLayout={checkTextOverflow} style={isTextOverflowing ? styles.textEllipsis : styles.text}>
+          
+                  <Text onLayout={checkTextOverflow} numberOfLines={1} ellipsizeMode='clip'
+                  style={styles.text}>
                     {formation.name}
                   </Text>
+                <View style={styles.line} >
                 </View>
               </View>
             );
@@ -54,9 +57,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-  textContainer: {
-    // width: 2000, // Set a fixed width for the text container
-    overflow: 'hidden',
+  line: {
+    borderColor: '#414141',
+    borderWidth: 1.5,
+    position: 'absolute',
+    top: '45%',
+    left: 0,
+    right: 0,
   },
   text: {
     margin: 10,
@@ -66,24 +73,16 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#FFFFFF',
   },
-  textEllipsis: {
-    margin: 10,
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: "center",
-    flex: 1,
-    color: '#FFFFFF',
-    overflow: 'hidden',
-    // textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
+
   formation: {
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: '#dc2f79',
-    borderRadius: 20,
+    borderRadius: 15,
     backgroundColor: "#262626",
     alignItems: "flex-start",
     height: "80%",
     flexDirection: "column",
+
   },
+
 });
