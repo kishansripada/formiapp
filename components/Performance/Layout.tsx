@@ -9,6 +9,7 @@ import { Dancers } from "./Dancers";
 import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
+import { MenuBar } from "./MenuBar";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -118,6 +119,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
+               <View><MenuBar screenHeight = {Dimensions.get('window').height} screenWidth = {Dimensions.get('window').width}/></View> 
+               
+               
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,
