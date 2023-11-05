@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MenuButton } from './MenuButton'; 
 
-export const MenuBar = ({screenHeight, screenWidth}) => {
-  let buttonDim = screenWidth/12;
-  const styles = StyleSheet.create( {
-    // outerContainer: {
-    //   backgroundColor: 'transparent',
-    //   // Set the overall height, including the border
-    //   height: 80 + 10, // Height of MenuBar (80) + Border height (10)
-    // },
-    
+export const MenuBar = ({ screenWidth }) => {
+  let buttonDim = screenWidth / 10;
+  
+  // State to keep track of the active button index
+  const [activeIndex, setActiveIndex] = useState(null);
+  
+  const styles = StyleSheet.create({
     menuBar: {
       flexDirection: 'row', 
       alignItems: 'center',
@@ -18,21 +16,22 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
       width: screenWidth,
       height: buttonDim,
       backgroundColor: 'black',
-      // height: 70,
-      // flex: 1
+      margin: 20,
+      borderColor: 'transparent', // Set the border color to transparent
     },
-  
   });
-  let iconColor = 'white';
-  let clickedColor = 'pink';
-    // button svgs and labels
+  
+  let iconColor = "white";
+  let clickedColor = "pink";
+
+  // button svgs and labels
   const menuButtons = [
     { svg: 
       `<svg
        xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 24 24"
        strokeWidth="1.5"
-       stroke=${iconColor}
+       stroke="${iconColor}"
        fill="none"
      >
        <path
@@ -40,13 +39,13 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
          strokeLinejoin="round"
          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
        />
-     </svg>`, label: 'Form' },
+     </svg>`, label: 'Form'},
     { svg: 
    `<svg
        xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 24 24"
        strokeWidth="1.5"
-       stroke=${iconColor}
+       stroke="${iconColor}"
        fill="none"
      >
        <path
@@ -55,13 +54,13 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
          d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
        />
      </svg>`,
-   label: 'Roster' },
+   label: 'Roster'},
     { svg: 
     `<svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     strokeWidth="1.5"
-    stroke=${iconColor}
+    stroke="${iconColor}"
     fill="none"
   >
     <path
@@ -75,7 +74,7 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         strokeWidth="1.5"
-        stroke=${iconColor}
+        stroke="${iconColor}"
         fill="none"
       >
         <path
@@ -91,7 +90,7 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke=${iconColor}
+      stroke="${iconColor}"
       fill="none"
     >
       <path
@@ -105,7 +104,7 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke=${iconColor}
+      stroke="${iconColor}"
       fill="none"
     >
       <path
@@ -117,45 +116,51 @@ export const MenuBar = ({screenHeight, screenWidth}) => {
     </svg>`, label: 'Settings'}
   ];
 
-  var buttonArray = menuButtons.map((button, idx) => (
-    <MenuButton key={idx} svg={button.svg} buttonDim = {buttonDim} >
-    {button.label}
-    </MenuButton>));
 
+  const handleClicks = [
+    () => {
+      console.log("Handle click for Form")
+    },
+    () => {
+      console.log("Handle click for Roster")
+    },
+    () => {
+      console.log("Handle click for Media")
+    },
+    () => {
+      console.log("Handle click for Props")
+    },
+    () => {
+      console.log("Handle click for Stage")
+    },
+    () => {
+      console.log("Handle click for Settings")
+    },
+  ];
+
+  // Function to handle button click
+  const handleButtonClick = (index) => {
+    handleClicks[index]();
+    setActiveIndex(index);
+    
+     // Set the active button index
+  };
+
+  var buttonArray = menuButtons.map((button, idx) => (
+    <MenuButton
+      key={idx}
+      svg={button.svg.replace(iconColor, idx === activeIndex ? clickedColor : iconColor)} // Replace color based on active state
+      buttonDim={buttonDim}
+      onPress={() => handleButtonClick(idx)} // Set the current button as active
+      textColor={idx === activeIndex ? clickedColor : iconColor} // Pass textColor based on active state
+    >
+      {button.label}
+    </MenuButton>
+  ));
 
   return (
-        <View style={[styles.menuBar]}>
-        {buttonArray}
-        </View>
-
-   );
+    <View style={[styles.menuBar]}>
+      {buttonArray}
+    </View>
+  );
 };
-
-
-
-
-
-
-// return (
-//     <View style={styles.outerContainer}>
-//       <View style={styles.menuBar}>
-//         {/* MenuBar content */}
-//       </View>
-//       <View style={styles.bottomBorder} />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-
-//   menuBar: {
-//     flexDirection: 'row', 
-//     alignItems: 'center',
-//     backgroundColor: 'black',
-//     height: 80, // Height of MenuBar without the border
-//     width: 420,
-//   },
-// });
-
-
-
