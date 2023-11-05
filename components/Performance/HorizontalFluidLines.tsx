@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings } from "../../lib/types"
+import React from "react";
 
 export const HorizontalFluidLines = ({cloudSettings, performanceOpen }) => {
    const [lineArray, setLineArray] = useState([10, 20, 30, 40])
