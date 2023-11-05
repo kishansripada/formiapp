@@ -2,27 +2,48 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MenuButton } from './MenuButton'; 
 
-export const MenuBar = ({ screenWidth }) => {
-  let buttonDim = screenWidth / 10;
+export const MenuBar = ({ screenWidth , screenHeight}) => {
+  let horizontalMode = screenWidth > screenHeight;
+  let buttonDim = 0;
+  let styles = StyleSheet.create({});
+  if(horizontalMode){
+    buttonDim = screenHeight / 12;
+    styles = StyleSheet.create({
+      menuBar: {
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        width: screenWidth,
+        height: buttonDim,
+        backgroundColor: '#262626',
+        margin: 20,
+        borderColor: 'transparent', // Set the border color to transparent
+      },
+    });
+  } 
+  else {
+    buttonDim = screenHeight / 15;
+    styles = StyleSheet.create({
+      menuBar: {
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        width: screenWidth,
+        height: buttonDim,
+        backgroundColor: '#262626',
+        margin: 20,
+        borderColor: 'transparent', // Set the border color to transparent
+      },
+    });
+  }
   
   // State to keep track of the active button index
   const [activeIndex, setActiveIndex] = useState(null);
   
-  const styles = StyleSheet.create({
-    menuBar: {
-      flexDirection: 'row', 
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-      width: screenWidth,
-      height: buttonDim,
-      backgroundColor: 'black',
-      margin: 20,
-      borderColor: 'transparent', // Set the border color to transparent
-    },
-  });
+
   
   let iconColor = "white";
-  let clickedColor = "pink";
+  let clickedColor = "#dc2f79";
 
   // button svgs and labels
   const menuButtons = [
