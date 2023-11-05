@@ -9,6 +9,7 @@ import { Dancers } from "./Dancers";
 import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
+import { MenuBar } from "./MenuBar";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -28,7 +29,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
-         return accumulator + object.durationSeconds;
+         return accumulator + object.durationSeconds + object.transition.durationSeconds;
        }, 0);
       setTimeline(timelineLength)
    }
@@ -52,6 +53,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .single()
          .then((r) => {
             setCloudSettings(r.data.settings);
+            r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
@@ -121,6 +123,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
+               <View><MenuBar screenHeight = {Dimensions.get('window').height} screenWidth = {Dimensions.get('window').width}/></View> 
+               
+               
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,
@@ -162,6 +167,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   >
                      <View style={[{width: pixelsPerSecond * timeline}, styles.innerView]}>
                         <Timeline 
+                           selectedFormation={selectedFormation}
                            cloudSettings={cloudSettings}
                            formations={formations}
                            performanceOpen={performanceOpen}
@@ -231,6 +237,10 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
+      // numberOfLines is not doing anything 
+
+      textOverflow: [5, "hanging", "each-line"],
+      flexWrap: "wrap",
    },
    emptyText: {
       flex: 1 / 4,
