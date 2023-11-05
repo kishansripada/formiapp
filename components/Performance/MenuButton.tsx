@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 
@@ -8,7 +8,8 @@ export const MenuButton = ({ svg, children, buttonDim, onPress, textColor}) => {
     button: {
       alignItems: 'center',
       justifyContent: 'center',
-      // borderWidth: 5,
+      borderWidth: buttonDim/25,
+      borderColor: 'transparent',
       // borderColor: 'blue',
       width: buttonDim,
       height: buttonDim
@@ -25,7 +26,7 @@ export const MenuButton = ({ svg, children, buttonDim, onPress, textColor}) => {
       width: '100%', // Ensure the text container spans the full width of the button
     },
     buttonText: {
-
+      fontSize: buttonDim/5,
       color: textColor,
       textAlign: 'center', // Center the text horizontally
     },
