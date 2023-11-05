@@ -20,6 +20,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(0);
    const [curSecond, setSecond] = useState(0);
+   const [startTime, setStartTime] = useState(0);
+   const [lastStopped, setLastStopped] = useState(0);
    const [pixelsPerSquare, setPixelsPerSquare] = useState(0);
    const [pixelsPerSecond, setPixelsPerSecond] = useState(0);
    const [loading, setLoading] = useState(false);
@@ -37,6 +39,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       // setPosition(event.nativeEvent.locationX)
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
+      setLastStopped(newSecond)
       setSecond(newSecond);
  }
 
@@ -153,6 +156,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      cloudSettings={cloudSettings}
                      curSecond={curSecond}
                      setSecond={setSecond}
+                     startTime={startTime}
+                     setStartTime={setStartTime}
+                     lastStopped={lastStopped}
+                     setLastStopped={setLastStopped}
                      timeline={timeline}
                   />
                   <TouchableHighlight 
