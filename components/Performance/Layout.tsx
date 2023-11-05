@@ -10,6 +10,7 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
+import React from "react"
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -230,10 +231,6 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
-      // numberOfLines is not doing anything 
-
-      textOverflow: [5, "hanging", "each-line"],
-      flexWrap: "wrap",
    },
    emptyText: {
       flex: 1 / 4,

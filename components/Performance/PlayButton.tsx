@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Image, TouchableHighlight } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, formation } from "../../lib/types"
+import { cloudSettings, formation } from "../../lib/types";
+import React from "react";
 // import { MaterialIcons } from '@expo/vector-icons';
 
 

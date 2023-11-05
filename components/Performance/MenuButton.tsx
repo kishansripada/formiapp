@@ -1,6 +1,7 @@
 // import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+import { SvgUri } from 'react-native-svg';
+import React from "react"
 
 export const MenuButton = ({ svg, children, buttonDim, onPress, textColor}) => {
   const iconRatio = 0.75;
@@ -41,9 +42,7 @@ export const MenuButton = ({ svg, children, buttonDim, onPress, textColor}) => {
       <SvgUri
       // width={styles.svgContainer.width}
       // height={styles.svgContainer.height}
-      source={{
-        uri: `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`,
-      }}
+      uri={`data:image/svg+xml;utf8,${encodeURIComponent(svg)}`}
       />
     </View>
   <View style={styles.buttonTextContainer}>

@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types"
+import { cloudSettings, PIXELS_PER_SQUARE } from "../../lib/types";
+import React from "react";
 
 export const EvenGridText = ({cloudSettings, performanceOpen, pixelsPerSquare }) => {
    // const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
