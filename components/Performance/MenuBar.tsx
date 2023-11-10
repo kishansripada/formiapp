@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MenuButton } from './MenuButton'; 
+import React from 'react';
 
-export const MenuBar = ({ screenWidth , screenHeight}) => {
+export const MenuBar = ({ screenWidth , screenHeight, activeIndex, setActiveIndex}) => {
   let horizontalMode = screenWidth > screenHeight;
   let buttonDim = 0;
   let styles = StyleSheet.create({menuBar: {}});
@@ -16,7 +17,7 @@ export const MenuBar = ({ screenWidth , screenHeight}) => {
         width: screenWidth,
         height: buttonDim,
         backgroundColor: '#262626',
-        margin: 20,
+        marginBottom: screenHeight*0.02,
         borderColor: 'transparent', // Set the border color to transparent
       },
     });
@@ -31,15 +32,12 @@ export const MenuBar = ({ screenWidth , screenHeight}) => {
         width: screenWidth,
         height: buttonDim,
         backgroundColor: '#262626',
-        margin: 20,
+        marginBottom: screenHeight*0.02,
         borderColor: 'transparent', // Set the border color to transparent
       },
     });
   }
-  
-  // State to keep track of the active button index
-  const [activeIndex, setActiveIndex] = useState(null);
-  
+    
 
   
   let iconColor = "white";
