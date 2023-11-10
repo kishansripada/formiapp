@@ -36,6 +36,14 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                   </Text>
                 <View style={styles.line} >
                 </View>
+                <View style={[
+                  styles.transitionBox,
+                  {
+                    width: `${(formation.transition.durationSeconds / (formation.transition.durationSeconds + formation.durationSeconds)) * 100}%`
+                  }
+                  ]}
+                >
+                </View>
               </View>
             );
           })}
@@ -80,9 +88,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#262626",
     alignItems: "flex-start",
-    height: "80%",
     flexDirection: "column",
 
   },
+  transitionBox: {
+
+    borderTopColor: '#414141',
+    height: "52.5%",
+    borderColor: '#dc2f79',
+    borderBottomLeftRadius: 12,
+    // borderRadius: 10,
+    backgroundColor: "#dc2f79",
+
+  }
 
 });

@@ -11,6 +11,7 @@ import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
 import React from "react"
+import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -151,7 +152,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                </View>
                   
                <View style={styles.player}>
-                  <Text style={styles.text}>Dance Player</Text>
+
                   <PlayButton 
                      cloudSettings={cloudSettings}
                      curSecond={curSecond}
@@ -166,7 +167,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      style={[{width: pixelsPerSecond * timeline}, styles.timeline]}
                      onPress={updateTimeline}
                   >
-                     <View style={[{width: pixelsPerSecond * timeline}, styles.innerView]}>
+                     <View style={[{width: pixelsPerSecond * timeline,
+                     }, styles.innerView]}>
                         <Timeline 
                            selectedFormation={selectedFormation}
                            cloudSettings={cloudSettings}
