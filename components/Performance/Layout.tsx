@@ -10,6 +10,7 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
+import { EmptyGrid } from "./Emptygrid";
 import React from "react"
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
@@ -137,7 +138,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
-                     : <></>
+                     :  <EmptyGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                   } 
                   <Dancers 
                      selectedFormation={selectedFormation} 
