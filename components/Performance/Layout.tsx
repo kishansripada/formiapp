@@ -38,6 +38,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
    const [activeIndex, setActiveIndex] = useState(null);
+   const [playing, setPlaying] = useState(false);
+
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -165,6 +167,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      cloudSettings={cloudSettings} 
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
+                     playing={playing}
                   />
                </View>
                   
@@ -179,6 +182,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      lastStopped={lastStopped}
                      setLastStopped={setLastStopped}
                      timeline={timeline}
+                     playing={playing}
+                     setPlaying={setPlaying}
                   />
                   <TouchableHighlight 
                      style={[{width: pixelsPerSecond * timeline}, styles.timeline]}
