@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types";
 
@@ -11,6 +13,10 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
     const isOverflowing = width > 100; // Adjust 100 to your desired text container width
     setIsTextOverflowing(isOverflowing);
   };
+
+  // get window height and width using dimensions and then use that to style - use layout file as a guide 
+  // set it to some percentage in height 
+
 
   return (
     <>
@@ -26,6 +32,7 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                   {
                     width: pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
+                    // height: Dimensions.get('window').height}
                   },
                 ]}
               >
@@ -35,6 +42,14 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                     {formation.name}
                   </Text>
                 <View style={styles.line} >
+                </View>
+                <View style={[
+                  styles.transitionBox,
+                  {
+                    width: `${(formation.transition.durationSeconds / (formation.transition.durationSeconds + formation.durationSeconds)) * 100}%`
+                  }
+                  ]}
+                >
                 </View>
               </View>
             );
@@ -80,9 +95,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#262626",
     alignItems: "flex-start",
-    height: "80%",
     flexDirection: "column",
 
   },
+  transitionBox: {
+
+    borderTopColor: '#414141',
+    height: "52.5%",
+    borderColor: '#dc2f79',
+    borderBottomLeftRadius: 12,
+    // borderRadius: 10,
+    backgroundColor: "#dc2f79",
+
+  }
 
 });
