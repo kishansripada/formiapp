@@ -46,16 +46,18 @@ const styles = StyleSheet.create({
 
   textBox: {
     width: '80%', 
-    height: '65%',
-    borderWidth: 1,
-    borderColor: '#DCDCDC',
-    borderRadius: 5,
+    height: '75%',
+    borderWidth: 5,
+    borderColor: '#dc2f79',
+    borderRadius: 20,
+    
     padding: "3%",
     paddingTop: "3%",
     fontSize: 30,
+    color: "white",
     alignSelf: 'center', 
     textAlignVertical: 'top', // This ensures that the text starts from the top on Android
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#383838',
   },
 
   modalContainer: {
@@ -63,24 +65,25 @@ const styles = StyleSheet.create({
     margin: 0, // Removes default margin for full width
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "#262626",
     alignSelf: "center",
     borderRadius: 10,
     // Other styles remain the same
   },
   closeButton: {
     alignSelf: 'flex-end',
-    margin: 1
+    margin: 10
   },
   closeButtonText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#333', // Or any color you prefer
+    color: 'white', // Or any color you prefer
   },
   modalTitle: {
     fontSize: 40,
     fontWeight: 'bold', 
     textAlign: 'center',
+    color:"#dc2f79",
     paddingVertical: 20, // Added padding vertically to give more space
 
   },

@@ -2,10 +2,10 @@ import React from "react";
 import {View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 
-export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight }) => {
+export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight, dancers }) => {
   const { width } = Dimensions.get('window');
   const visible = activeIndex === 1;
-
+  // console.log(dancers);
   return (
     <Modal
       isVisible={visible}
@@ -21,6 +21,14 @@ export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight }) => {
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
           <Text style={styles.modalTitle}>{"Roster"}</Text>
+          <View style={styles.rowContainer}>
+            <View style={styles.leftView}>
+            <Text style={styles.modalTitle}>{"blahblahblah"}</Text>
+            </View>
+            <View style={styles.rightView}>
+              {/* Right side content goes here */}
+            </View>
+          </View>
           {/* Add more content here as needed */}
         </View>
     </Modal>
@@ -71,8 +79,27 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold', 
     textAlign: 'center',
-    // paddingVertical: 10, // Added padding vertically to give more space
+    paddingVertical: 10, // Added padding vertically to give more space
 
+  },
+
+  rowContainer: {
+    flexDirection: 'row', // Align children in a row
+    justifyContent: 'space-between', // Use 'flex-start' to align children at the start of the container
+    alignItems: 'center', // Align children vertically in the center
+    height: '80%',
+    width: '100%', // Take up full width to contain the children
+  },
+  leftView: {
+    backgroundColor: "blue",
+    width: '50%',
+    height: '100%',
+  },
+  rightView: {
+    backgroundColor: "red",
+    width: '50%',
+    height: '40%',
+    alignSelf: "flex-start",
   },
 });
 
