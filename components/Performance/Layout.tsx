@@ -121,7 +121,6 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    // const modalHeight = Dimensions.get('window').height;
-   // console.log( 56 /  Dimensions.get("window").height)
    return (
       <>
       {cloudSettings ?
@@ -137,11 +136,11 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             </View>
             <View style={styles.body}>
             <View><MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/></View>
-               <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
                <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
-               <StageModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <StageModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} cloudSettings={cloudSettings}/>
                <SettingsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <View 
                   style={[{

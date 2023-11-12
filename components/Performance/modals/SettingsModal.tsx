@@ -1,17 +1,19 @@
 import React from "react";
-import { Modal, View, Text, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
-export const SettingsModal = ({activeIndex, setActiveIndex, modalHeight}) => {
-  // Get the full dimensions of the screen
-  const { width, height } = Dimensions.get('window');
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import Modal from 'react-native-modal';
+
+export const SettingsModal = ({ activeIndex, setActiveIndex, modalHeight }) => {
+  const { width } = Dimensions.get('window');
   const visible = activeIndex === 5;
+
   return (
     <Modal
-      transparent={true}
-      visible={visible}
-      onRequestClose={() => setActiveIndex(null)}
+      isVisible={visible}
+      hasBackdrop={false}
+      coverScreen={false}
+      style={styles.modalContainer} // Added style for positioning the modal
     >
-      <View style={[styles.modalOverlay, { width, height: modalHeight}]}>
-        <View style={[styles.modalContent, { width, height: modalHeight }]}>
+        <View style={[styles.modalContent, { width, height: modalHeight}]}>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setActiveIndex(null)}
@@ -21,26 +23,30 @@ export const SettingsModal = ({activeIndex, setActiveIndex, modalHeight}) => {
           <Text style={styles.modalTitle}>{"Settings"}</Text>
           {/* Add more content here as needed */}
         </View>
-      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+  // modalOverlay: {
+  //   flex: 0,
+  //   justifyContent: 'flex-end',
+  //   alignItems: 'center',
+  // },
+
+  modalContainer: {
+    justifyContent: 'flex-end', // Aligns the modal to the bottom
+    margin: 0, // Removes default margin for full width
   },
   modalContent: {
-    backgroundColor: 'white',
-    // width: '90%', // Adjust the width as needed
-    // maxHeight: '80%', // Adjust the max height as needed
-    borderRadius: 10, // Optional: for rounded corners
-    padding: 20, // Add padding for inner content
+    backgroundColor: 'red',
+    alignSelf: "center",
+    borderRadius: 10,
+    // Other styles remain the same
   },
   closeButton: {
     alignSelf: 'flex-end',
+    margin: 10
   },
   closeButtonText: {
     fontSize: 24,
@@ -54,5 +60,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   }
 });
-
-
