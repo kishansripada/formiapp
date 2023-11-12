@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TouchableHighlight, ScrollView} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
+import { cloudSettings, formation, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
 import { Grid } from "./Grid";
 import { FluidGrid } from "./FluidGrid";
 import { Dancers } from "./Dancers";
@@ -26,7 +26,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
-   const [selectedFormation, setSelectedFormation] = useState<string>("");
+   const [selectedFormation, setSelectedFormation] = useState<formation>();
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(0);
    const [curSecond, setSecond] = useState(0);
@@ -38,6 +38,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
    const [activeIndex, setActiveIndex] = useState(null);
+   const heightForTimeline =  Dimensions.get('window').height;
+   const bottomPosition =  (heightForTimeline * 0.1);
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -154,7 +156,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                >
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
-                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
+                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/>//> 
                      :  <EmptyGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                   } 
                   <Dancers 
@@ -168,7 +170,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   />
                </View>
                   
-               <View style={styles.player}>
+               <View style={[{bottom:bottomPosition , position: "absolute"}, styles.player]}>
 
                   <PlayButton 
                      cloudSettings={cloudSettings}
@@ -181,7 +183,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      timeline={timeline}
                   />
                   <TouchableHighlight 
-                     style={[{width: pixelsPerSecond * timeline}, styles.timeline]}
+                     style={[{width: pixelsPerSecond * timeline
+                     }, styles.timeline,
+                    ]}
                      onPress={updateTimeline}
                   >
                      <View style={[{width: pixelsPerSecond * timeline,
@@ -270,12 +274,13 @@ const styles = StyleSheet.create({
    timeline: {
       height: 120,
       flexDirection: "row",
-      backgroundColor: "#262626",
-      borderColor: '#dc2f79',
+      // backgroundColor: "#262626",
+      // borderColor: '#dc2f79',
       alignItems: "flex-start",
-      borderWidth: 4,
-      borderRadius: 20,
-      position: "relative",
+      // borderWidth: 4,
+      // borderRadius: 20,
+      // position: "absolute",
+      // bottom: 0,
    },
    innerView: {
       height: "100%",

@@ -1,3 +1,4 @@
+import { ScreenHeight } from "@rneui/base";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from "react-native";
@@ -7,11 +8,13 @@ import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types";
 
 export const Timeline = ({ selectedFormation, cloudSettings, formations, performanceOpen, pixelsPerSecond }) => {
   const [isTextOverflowing, setIsTextOverflowing] = useState(false);
-
+  const screenHeight = Dimensions.get('window').height;
   const checkTextOverflow = (event) => {
     const { width, height } = event.nativeEvent.layout;
     const isOverflowing = width > 100; // Adjust 100 to your desired text container width
     setIsTextOverflowing(isOverflowing);
+    //  get screen height to use to resize timeline later
+    
   };
 
   // get window height and width using dimensions and then use that to style - use layout file as a guide 
@@ -32,13 +35,17 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                   {
                     width: pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
-                    // height: Dimensions.get('window').height}
+                    height: screenHeight / 10,// height: Dimensions.get('window').height}
                   },
                 ]}
               >
           
                   <Text onLayout={checkTextOverflow} numberOfLines={1} ellipsizeMode='clip'
-                  style={styles.text}>
+                  style={[
+                    styles.text, {
+                      fontSize: screenHeight / 60,
+                    }
+                  ]}>
                     {formation.name}
                   </Text>
                 <View style={styles.line} >
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
   text: {
     margin: 10,
     fontWeight: "bold",
-    fontSize: 20,
+    // fontSize: 20,
     textAlign: "center",
     flex: 1,
     color: '#FFFFFF',

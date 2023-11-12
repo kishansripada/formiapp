@@ -27,7 +27,7 @@ export const MenuButton = ({ svg, children, buttonDim, onPress, textColor}) => {
       width: '100%', // Ensure the text container spans the full width of the button
     },
     buttonText: {
-      fontSize: buttonDim/5,
+      fontSize: buttonDim/6,
       color: textColor,
       textAlign: 'center', // Center the text horizontally
     },

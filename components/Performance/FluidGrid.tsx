@@ -7,7 +7,7 @@ import { HorizontalFluidLines } from "./HorizontalFluidLines";
 import { EvenGridText } from "./EvenGridText";
 import React from "react";
 
-export const FluidGrid = ({cloudSettings, performanceOpen }) => {
+export const FluidGrid = ({cloudSettings, performanceOpen, pixelsPerSquare}) => {
    const [loading, setLoading] = useState(false);
 
 
@@ -16,7 +16,7 @@ export const FluidGrid = ({cloudSettings, performanceOpen }) => {
          <View style={styles.container}>
             <HorizontalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
             <VerticalFluidLines cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
-            <EvenGridText pixelsPerSquare={PIXELS_PER_SQUARE} cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
+            <EvenGridText pixelsPerSquare={pixelsPerSquare} cloudSettings={cloudSettings} performanceOpen={performanceOpen}/>
          </View>
       </>
    );
