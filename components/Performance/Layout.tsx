@@ -10,14 +10,16 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
+
 import { FormModal } from "./modals/FormModal";
 import { RosterModal } from "./modals/RosterModal";
 import { MediaModal } from "./modals/MediaModal";
 import { PropsModal } from "./modals/PropsModal";
 import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
+import { EmptyGrid } from "./Emptygrid";
+import React from "react"
 
-import React from "react";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -152,7 +154,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                      : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
-                     : <></>
+                     :  <EmptyGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                   } 
                   <Dancers 
                      selectedFormation={selectedFormation} 
