@@ -6,15 +6,11 @@ import {linear, cubic} from "./transitionTypes"
 import React from "react";
 
 
-export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
+export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare, playing}) => {
    const [formationNum, setFormationNum] = useState(0);
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
 
    // Moved all of the styling here so that we could use pixelsPerSquare in the styling
-   
-  
-  
-
 
 
    const coordsToPosition = (coords: { x: number; y: number }) => {
@@ -109,11 +105,11 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
-                  console.log(pos)
+                  // console.log(pos)
                   
 
 
-                  if (formationNum == 0){
+                  if (formationNum == 0 || playing === false){
                      return (
                         <View 
                            key={pos.id}
