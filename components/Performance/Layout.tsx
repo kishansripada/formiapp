@@ -101,13 +101,13 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
       if (cloudSettings && timeline) {            
          const windowWidth = Dimensions.get('window').width;
-         const stageWidth = windowWidth * 3 / 4;
+         const stageWidth = windowWidth * .95;
          if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
             const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
             setPixelsPerSquare(squarePixel);
          } else {
             const windowHeight = Dimensions.get('window').height;
-            const stageHeight = windowHeight * 1 / 2;
+            const stageHeight = windowHeight * .95;
             const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
             setPixelsPerSquare(squarePixel);
          }
@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: Dimensions.get("window").height*0.05,
       paddingBottom: Dimensions.get("window").height*0.025,
-      flex: 0.02
+      flex: 0.02,
+      backgroundColor: "#262626",
       // You can add flex: 1 here if you want the header to be flexible
    },
    body: {
@@ -232,6 +233,7 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       alignItems: "center",
       borderRadius: 2,
+      backgroundColor: '#171717',
    },
    debug: {
       flexDirection: "row",
@@ -258,6 +260,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
+      color: '#FFFFFF',
    },
    emptyText: {
       flex: 1 / 4,
