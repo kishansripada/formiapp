@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       alignItems: "center",
       borderRadius: 2,
-      backgroundColor: "orange",
    },
    debug: {
       flexDirection: "row",
