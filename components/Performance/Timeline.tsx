@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
+
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types";
 
