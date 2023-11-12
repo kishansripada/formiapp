@@ -11,10 +11,6 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
 
    // Moved all of the styling here so that we could use pixelsPerSquare in the styling
-   
-  
-  
-
 
 
    const coordsToPosition = (coords: { x: number; y: number }) => {
