@@ -10,8 +10,16 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
+
+import { FormModal } from "./modals/FormModal";
+import { RosterModal } from "./modals/RosterModal";
+import { MediaModal } from "./modals/MediaModal";
+import { PropsModal } from "./modals/PropsModal";
+import { StageModal } from "./modals/StageModal";
+import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react"
+
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -28,6 +36,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [loading, setLoading] = useState(false);
    const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
+   const [activeIndex, setActiveIndex] = useState(null);
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -108,16 +117,19 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    }, [cloudSettings, timeline]);
 
    useEffect(() => {
-      fetchTimelineLength();
+      fetchTimelineLength(); 
    }, [formations]);
-
+   // this is currently hardcoded as opposed to height - menuBar height. Probably not a good idea.
+   const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
+   const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
+   // const modalHeight = Dimensions.get('window').height;
    return (
       <>
       {cloudSettings ?
-         <ScrollView style={styles.container}>
+         <View style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
-                  <Svg width={32} height={32} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
+                  <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                   </Svg>
                </TouchableOpacity>
@@ -125,9 +137,13 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
-               <View><MenuBar screenHeight = {Dimensions.get('window').height} screenWidth = {Dimensions.get('window').width}/></View> 
-               
-               
+            <View><MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/></View>
+               <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
+               <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <StageModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} cloudSettings={cloudSettings}/>
+               <SettingsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,
@@ -185,8 +201,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      </View>
                   </TouchableHighlight>
                </View>
-            </View>
-         </ScrollView>
+            </View>  
+         </View>
          : <></>
       }
       </>
@@ -204,15 +220,17 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "space-between",
       paddingHorizontal: 20,
-      paddingTop: 56,
-      paddingBottom: 20,
+      paddingTop: Dimensions.get("window").height*0.05,
+      paddingBottom: Dimensions.get("window").height*0.025,
+      flex: 0.02
+      // You can add flex: 1 here if you want the header to be flexible
    },
    body: {
+      flex: 1, // This will allow the body to take up all remaining space
       flexDirection: "column",
       alignItems: "center",
-      justifyContent: "center",
       borderRadius: 2,
-      flexGrow: 1,
+      backgroundColor: "orange",
    },
    debug: {
       flexDirection: "row",
