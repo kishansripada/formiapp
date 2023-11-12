@@ -7,8 +7,7 @@ import React from "react";
 
 
 
-export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline }) => {
-   const [playing, setPlaying] = useState(false);
+export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline, playing, setPlaying }) => {
    const [intervalID, setIntervalID] = useState(null);
 
    const updateTime = () => {

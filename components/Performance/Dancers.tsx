@@ -6,7 +6,7 @@ import {linear, cubic} from "./transitionTypes"
 import React from "react";
 
 
-export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
+export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare, playing}) => {
    const [formationNum, setFormationNum] = useState(0);
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
 
@@ -113,7 +113,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                   
 
 
-                  if (formationNum == 0){
+                  if (formationNum == 0 || playing === false){
                      return (
                         <View 
                            key={pos.id}
