@@ -6,15 +6,11 @@ import {linear, cubic} from "./transitionTypes"
 import React from "react";
 
 
-export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare }) => {
+export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare, playing}) => {
    const [formationNum, setFormationNum] = useState(0);
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
 
    // Moved all of the styling here so that we could use pixelsPerSquare in the styling
-   
-  
-  
-
 
 
    const coordsToPosition = (coords: { x: number; y: number }) => {
@@ -109,11 +105,10 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
-                  // console.log(pos)
                   
 
 
-                  if (formationNum == 0){
+                  if (formationNum == 0 || playing === false || percentThroughTransition === 1){
                      return (
                         <View 
                            key={pos.id}
@@ -125,8 +120,8 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                            ]}
                         >
                         <View style={[
-                             
-                                 { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
+            
+                                 { backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877", borderBottomColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877",},
                                  curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
                                  curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
                                  curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
@@ -144,30 +139,24 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
 
                      const startPosition = coordsToPosition({x: formations[formationNum - 1].positions[index].position.x, y: formations[formationNum - 1].positions[index].position.y});
                      const endPosition = coordsToPosition({x: pos.position.x, y: pos.position.y});
-                     let transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
-                     // currently broken everything is linear
-                     // console.log(curDancer)
-                     // console.log(pos)
-                     // console.log(pos.transitionType)
+                     let transitionPosition:any = "kish"
 
-                     // if (pos.transitionType = 'cubic'){
-                     //    // console.log("hit")
-                     //    // transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos.controlPointStart, pos.controlPointEnd)
+                   
+                     if(pos?.transitionType === "teleport"){
+                        return (
+                           <></>
+                        )
 
+                     }
+                     else if(pos?.transitionType === "cubic"){
+                        transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos?.controlPointStart, pos?.controlPointEnd);
 
-                     // }
-                     // else if (pos.transitionType = 'teleport'){
+                     }
+                     else{
+                        transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
 
-                     // }
-                     // else{
-                     //    transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
-
-                     // }
-
-
-
-
-
+                     }
+  
                      return (
                         <View 
                            key={pos.id}
