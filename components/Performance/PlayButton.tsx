@@ -62,6 +62,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
         cloudSettings ? 
         <View style={styles.container}>
             <TouchableHighlight
+               underlayColor="transparent"
                onPress={handlePlay}
             >
                <View style={styles.icon}>
