@@ -186,6 +186,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      style={[{width: pixelsPerSecond * timeline
                      }, styles.timeline,
                     ]}
+                     underlayColor="transparent"
                      onPress={updateTimeline}
                   >
                      <View style={[{width: pixelsPerSecond * timeline,

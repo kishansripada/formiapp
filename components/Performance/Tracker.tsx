@@ -20,14 +20,21 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
       <>
       {
         cloudSettings ? 
-        <View style={styles.container}>
+        <View style={[
+            styles.container,
+            {height: screenHeight / 10}
+        ]}>
             <View style={[
                     styles.line,
-                    { left:  position }
+                    { left:  position, }
                 ]}/>
              <View style={[
                     styles.triangle,
-                    { left:  position - 12.45}
+                    { left:  position - 12.45,
+                        borderLeftWidth: screenHeight / 100,
+                        borderRightWidth: screenHeight / 100,
+                        borderBottomWidth: screenHeight / 50,
+                    }
                 ]}/>
         </View>
         : <></>
@@ -42,7 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         width: "100%",
-        height: "100%",
+        // height: "100%",
     },
     text: {
         margin: 10,
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
         width: 0,
         borderColor: '#dc2f79',
         borderWidth: 2,
-        height: "100%",
+        height: "120%",
    },
    triangle: {
     width: 0,
