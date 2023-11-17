@@ -105,11 +105,10 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
-                  // console.log(pos)
                   
 
 
-                  if (formationNum == 0 || playing === false){
+                  if (formationNum == 0 || playing === false || percentThroughTransition === 1){
                      return (
                         <View 
                            key={pos.id}
@@ -140,30 +139,24 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
 
                      const startPosition = coordsToPosition({x: formations[formationNum - 1].positions[index].position.x, y: formations[formationNum - 1].positions[index].position.y});
                      const endPosition = coordsToPosition({x: pos.position.x, y: pos.position.y});
-                     let transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
-                     // currently broken everything is linear
-                     // console.log(curDancer)
-                     // console.log(pos)
-                     // console.log(pos.transitionType)
+                     let transitionPosition:any = "kish"
 
-                     // if (pos.transitionType = 'cubic'){
-                     //    // console.log("hit")
-                     //    // transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos.controlPointStart, pos.controlPointEnd)
+                   
+                     if(pos?.transitionType === "teleport"){
+                        return (
+                           <></>
+                        )
 
+                     }
+                     else if(pos?.transitionType === "cubic"){
+                        transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos?.controlPointStart, pos?.controlPointEnd);
 
-                     // }
-                     // else if (pos.transitionType = 'teleport'){
+                     }
+                     else{
+                        transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
 
-                     // }
-                     // else{
-                     //    transitionPosition = linear(startPosition, endPosition, percentThroughTransition);
-
-                     // }
-
-
-
-
-
+                     }
+  
                      return (
                         <View 
                            key={pos.id}
