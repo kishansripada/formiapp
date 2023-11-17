@@ -128,6 +128,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    // this is currently hardcoded as opposed to height - menuBar height. Probably not a good idea.
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
+   let iconColor = "white";
    // const modalHeight = Dimensions.get('window').height;
    return (
       <>
@@ -135,7 +136,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          <View style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
-                  <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
+                  <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                   </Svg>
                </TouchableOpacity>
