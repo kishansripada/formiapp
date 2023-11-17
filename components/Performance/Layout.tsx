@@ -10,7 +10,6 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
-
 import { FormModal } from "./modals/FormModal";
 import { RosterModal } from "./modals/RosterModal";
 import { MediaModal } from "./modals/MediaModal";
