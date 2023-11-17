@@ -30,7 +30,7 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
                 ]}/>
              <View style={[
                     styles.triangle,
-                    { left:  position - 12.45,
+                    { left:  position - (screenHeight / 80),
                         borderLeftWidth: screenHeight / 100,
                         borderRightWidth: screenHeight / 100,
                         borderBottomWidth: screenHeight / 50,
