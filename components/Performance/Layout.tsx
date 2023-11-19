@@ -188,6 +188,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      timeline={timeline}
                      playing={playing}
                      setPlaying={setPlaying}
+                     pixelsPerSquare={pixelsPerSquare}
                   />
                   <TouchableHighlight 
                      style={[{width: pixelsPerSecond * timeline

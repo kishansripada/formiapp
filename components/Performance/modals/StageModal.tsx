@@ -100,5 +100,6 @@ const styles = StyleSheet.create({
   setting: {
     marginBottom: 25,
     alignItems: "center",
+    flexDirection: "column",
   }
 });
