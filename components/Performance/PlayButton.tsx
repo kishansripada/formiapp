@@ -16,7 +16,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
       const newSecond = (Date.now() - startTime) / 1000 + lastStopped
       let setSecondLet = newSecond
       setSecond((prevSecond) => {
-         if (prevSecond >= timeline - .1) {
+         if (prevSecond >= timeline - .05) {
             setPlaying(false)
             return prevSecond
          } else {
@@ -100,12 +100,11 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
 
 const styles = StyleSheet.create({
     container: {
-        position: "relative",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",       
-      //   height: "3%",
+      position: "relative",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
     },
     timer: {
       color: "#FFFFFF",

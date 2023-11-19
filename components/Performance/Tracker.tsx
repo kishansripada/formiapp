@@ -7,16 +7,7 @@ import React from "react";
 export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond, pixelsPerSquare}) => {
    
     const screenHeight = Dimensions.get('window').height;
-    const triangleBaseWidth = screenHeight / 50;
-    const triangleTop =pixelsPerSquare < 15 
-    ? -(screenHeight / 10) * 1.16
-    : -(screenHeight / 10) * 1.43;
-    const lineTop =pixelsPerSquare < 15 
-     ? 11
-    : -20;
-    const triangePosition =pixelsPerSquare < 15 
-    ? 6.5
-    : 12;
+    const lineTop = pixelsPerSquare < 15 ? 11 : -20;
     const secondsToPosition = ( seconds: number ) => {
         return (seconds * pixelsPerSecond);
     };
@@ -30,26 +21,26 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
       <>
       {
         cloudSettings ? 
-        <View style={[
-            styles.container,
-            {height: (screenHeight / 10) }
-        ]}>
+        <View style={styles.container}>
             <View style={[
                     styles.line,
-                    { left:  position,
-                    top:lineTop, }
-                ]}/>
-             <View 
-             
-             style={[
-                    styles.triangle,
-                    {  left: position - triangePosition,
-                        top: triangleTop,
-                        borderLeftWidth: screenHeight / 100,
-                        borderRightWidth: screenHeight / 100,
-                        borderBottomWidth: screenHeight / 50,
+                    { 
+                        left: position,
+                        top: lineTop, 
                     }
-                ]}/>
+                ]}
+            />
+            <View style={[
+                    styles.triangle,
+                    {  
+                        left: position - (pixelsPerSecond / 10),
+                        top: lineTop,
+                        // borderLeftWidth: screenHeight / 100,
+                        // borderRightWidth: screenHeight / 100,
+                        // borderBottomWidth: screenHeight / 50,
+                    }
+                ]}
+            />
         </View>
         : <></>
       }
@@ -60,9 +51,10 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-    flex: 1,
-    flexDirection: "column",
-    width: "100%",
+        flex: 1,
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
     },
     text: {
         margin: 10,
@@ -77,20 +69,21 @@ const styles = StyleSheet.create({
         borderColor: '#dc2f79',
         borderWidth: 2,
         height: "120%",
-   },
-   triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: "solid",
-    borderStyle: "solid",
-    borderLeftWidth:  10,
-    borderRightWidth:  10,
-    borderBottomWidth: 20,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    transform: [{ rotate: "180deg" }],
-    borderBottomColor: '#dc2f79',
-
-  },
+        position: "absolute",
+    },
+    triangle: {
+        position: "absolute",
+        width: 0,
+        height: 0,
+        backgroundColor: "solid",
+        borderStyle: "solid",
+        borderLeftWidth:  10,
+        borderRightWidth:  10,
+        borderBottomWidth: 20,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        transform: [{ rotate: "180deg" }],
+        borderBottomColor: '#dc2f79',
+    },
 });
 

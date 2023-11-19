@@ -35,29 +35,25 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                   {
                     width: pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
-                    height: screenHeight / 10,// height: Dimensions.get('window').height}
                   },
                 ]}
               >
-          
-                  <Text onLayout={checkTextOverflow} numberOfLines={1} ellipsizeMode='clip'
+                <Text onLayout={checkTextOverflow} numberOfLines={1} ellipsizeMode='clip'
                   style={[
                     styles.text, {
                       fontSize: screenHeight / 60,
-                    }
-                  ]}>
+                  }
+                ]}>
                     {formation.name}
-                  </Text>
-                <View style={styles.line} >
-                </View>
+                </Text>
+                <View style={styles.line} />
                 <View style={[
                   styles.transitionBox,
                   {
                     width: `${(formation.transition.durationSeconds / (formation.transition.durationSeconds + formation.durationSeconds)) * 100}%`
                   }
                   ]}
-                >
-                </View>
+                />
               </View>
             );
           })}
@@ -71,7 +67,6 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
     flex: 1,
     flexDirection: "row",
     width: "100%",
@@ -90,7 +85,6 @@ const styles = StyleSheet.create({
   text: {
     margin: 10,
     fontWeight: "bold",
-    // fontSize: 20,
     textAlign: "center",
     flex: 1,
     color: '#FFFFFF',
@@ -103,17 +97,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#262626",
     alignItems: "flex-start",
     flexDirection: "column",
-
   },
   transitionBox: {
-
     borderTopColor: '#414141',
     height: "52.5%",
     borderColor: '#dc2f79',
     borderBottomLeftRadius: 12,
-    // borderRadius: 10,
     backgroundColor: "#dc2f79",
-
   }
 
 });

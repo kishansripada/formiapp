@@ -37,12 +37,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
    const [activeIndex, setActiveIndex] = useState(null);
-   const heightForTimeline =  Dimensions.get('window').height;
-   const bottomPosition =  (heightForTimeline * 0.1);
-
    const [playing, setPlaying] = useState(false);
 
-
+   const windowWidth = Dimensions.get('window').width;
+   const windowHeight = Dimensions.get('window').height;
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -90,7 +88,6 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
                setPixelsPerSquare(squarePixel);
             } else {
-               const windowHeight = Dimensions.get('window').height;
                const stageHeight = windowHeight * 1 / 2;
                const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
                setPixelsPerSquare(squarePixel);
@@ -105,17 +102,11 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    useEffect(() => {
       // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
       if (cloudSettings && timeline) {            
-         const windowWidth = Dimensions.get('window').width;
          const stageWidth = windowWidth * .95;
-         if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
-            const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
-            setPixelsPerSquare(squarePixel);
-         } else {
-            const windowHeight = Dimensions.get('window').height;
-            const stageHeight = windowHeight * .95;
-            const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
-            setPixelsPerSquare(squarePixel);
-         }
+         const widthSquarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+         const stageHeight = windowHeight * (1 - 149/375) * .95;
+         const heightSquarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
+         setPixelsPerSquare(Math.min(widthSquarePixel, heightSquarePixel));
 
          const secondPixel = Math.ceil(stageWidth / timeline);
          setPixelsPerSecond(secondPixel);
@@ -129,7 +120,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
-   // const modalHeight = Dimensions.get('window').height;
+
    return (
       <>
       {cloudSettings ?
@@ -144,7 +135,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                <Text style={[styles.text, styles.emptyText]}></Text>
             </View>
             <View style={styles.body}>
-            <View><MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/></View>
+               <MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/>
                <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
                <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers} pixelsPerSquare={pixelsPerSquare}/>
                <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
@@ -175,8 +166,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                   />
                </View>
                   
-               <View style={[{bottom:bottomPosition , position: "absolute"}, styles.player]}>
-
+               <View style={[{position: "relative"}, styles.player]}>
                   <PlayButton 
                      cloudSettings={cloudSettings}
                      curSecond={curSecond}
@@ -238,14 +228,15 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: Dimensions.get("window").height*0.05,
       paddingBottom: Dimensions.get("window").height*0.025,
-      flex: 0.02,
+      flex: 2,
       backgroundColor: "#262626",
       // You can add flex: 1 here if you want the header to be flexible
    },
    body: {
-      flex: 1, // This will allow the body to take up all remaining space
+      flex: 98, // This will allow the body to take up all remaining space
       flexDirection: "column",
       alignItems: "center",
+      justifyContent: "space-between",
       borderRadius: 2,
       backgroundColor: '#171717',
    },
@@ -261,7 +252,7 @@ const styles = StyleSheet.create({
       borderWidth: 4,
       borderRadius: 20,
       justifyContent: "space-evenly",
-      marginBottom: 80,
+      marginBottom: 20,
    },
    test: {
       fontSize: 60,
@@ -285,15 +276,9 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
-      height: 120,
       flexDirection: "row",
-      // backgroundColor: "#262626",
-      // borderColor: '#dc2f79',
       alignItems: "flex-start",
-      // borderWidth: 4,
-      // borderRadius: 20,
-      // position: "absolute",
-      // bottom: 0,
+      height: "100%",
    },
    innerView: {
       height: "100%",
@@ -304,5 +289,8 @@ const styles = StyleSheet.create({
    player: {
       flexDirection: "column",
       alignItems: "center",
+      height: "30%",
+      paddingBottom: "10%",
+      width: "100%",
    },
 });
