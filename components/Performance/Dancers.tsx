@@ -85,7 +85,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
      dancerIconTriangle: {
         width: 0,
         height: 0,
-        backgroundColor: "solid",
+        backgroundColor: "transparent",
         borderStyle: "solid",
         borderLeftWidth: pixelsPerSquare / 2,
         borderRightWidth: pixelsPerSquare / 2,
@@ -120,12 +120,10 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                            ]}
                         >
                         <View style={[
-                             
-                                 { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
-                                 curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
-                                 curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
-                                 curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
-                                 styles.dancerIconCircle 
+         
+                                 curDancer[0]?.shape === "square" ? [styles.dancerIconSquare, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}] :
+                                 curDancer[0]?.shape === "triangle" ? [styles.dancerIconTriangle, {borderBottomColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"},] :
+                                 [styles.dancerIconCircle, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}]
                         ]}/>
                            <Text style={[
                               {
@@ -144,9 +142,8 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                    
                      if(pos?.transitionType === "teleport"){
                         return (
-                           <></>
+                           <View key={pos.id}></View>
                         )
-
                      }
                      else if(pos?.transitionType === "cubic"){
                         transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos?.controlPointStart, pos?.controlPointEnd);

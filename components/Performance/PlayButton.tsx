@@ -2,26 +2,22 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { StyleSheet, View, Text, Image, TouchableHighlight } from "react-native";
 import { SvgUri } from 'react-native-svg';
 import React from "react";
+// import { useStore } from "../../lib/store";
 // import { MaterialIcons } from '@expo/vector-icons';
 
 
 
 export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline, playing, setPlaying }) => {
    const [intervalID, setIntervalID] = useState(null);
-
    const playSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>`
    const pauseSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
 
-   const updateTime = () => {
+   const updateTime = (startTime) => {
       const newSecond = (Date.now() - startTime) / 1000 + lastStopped
       let setSecondLet = newSecond
       if (newSecond > timeline) {
          setSecondLet = curSecond
       }
-      setSecond(setSecondLet);
-   }
-
-   const updateTimePosition = () => {
       setSecond(setSecondLet);
    }
 
@@ -31,6 +27,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
          setStartTime(0)
       } else {
          setStartTime(Date.now())
+         clearInterval(intervalID)
       }
       setPlaying(!playing)
    }
@@ -49,14 +46,15 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
   }
 
    useEffect(() => {
-      if (startTime > 0) {
-         const tempID = setInterval(updateTime, 1);
-         setIntervalID(tempID)
-      } else {
+      if (!playing) {
          clearInterval(intervalID)
          setIntervalID(null);
+      } else {
+         const tempID = setInterval(() => updateTime(startTime), 20);
+         setIntervalID(tempID)
       }
-   }, [startTime])
+   
+   }, [playing])
 
    return (
       <>
@@ -64,6 +62,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
         cloudSettings ? 
         <View style={styles.container}>
             <TouchableHighlight
+               underlayColor="transparent"
                onPress={handlePlay}
             >
                <View style={styles.icon}>
