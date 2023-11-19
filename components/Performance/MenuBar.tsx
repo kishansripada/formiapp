@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MenuButton } from './MenuButton'; 
 import React from 'react';
@@ -138,22 +137,22 @@ export const MenuBar = ({ screenWidth , screenHeight, activeIndex, setActiveInde
 
   const handleClicks = [
     () => {
-      console.log("Handle click for Form")
+      // console.log("Handle click for Form")
     },
     () => {
-      console.log("Handle click for Roster")
+      // console.log("Handle click for Roster")
     },
     () => {
-      console.log("Handle click for Media")
+      // console.log("Handle click for Media")
     },
     () => {
-      console.log("Handle click for Props")
+      // console.log("Handle click for Props")
     },
     () => {
-      console.log("Handle click for Stage")
+      // console.log("Handle click for Stage")
     },
     () => {
-      console.log("Handle click for Settings")
+      // console.log("Handle click for Settings")
     },
   ];
 

@@ -7,8 +7,7 @@ import React from "react";
 
 
 
-export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline }) => {
-   const [playing, setPlaying] = useState(false);
+export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline, playing, setPlaying }) => {
    const [intervalID, setIntervalID] = useState(null);
    const playSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>`
    const pauseSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
@@ -63,6 +62,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
         cloudSettings ? 
         <View style={styles.container}>
             <TouchableHighlight
+               underlayColor="transparent"
                onPress={handlePlay}
             >
                <View style={styles.icon}>
