@@ -5,6 +5,7 @@ import { convertToCentimeters, convertToFeetAndInches } from "../utils";
 const iconSize = 20;
 export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight, dancers, pixelsPerSquare }) => {
   // console.log(dancers);
+  const textSize = pixelsPerSquare * 2;
   const { width } = Dimensions.get('window');
   const visible = activeIndex === 1;
   const [clickedDancer, setClickedDancer] = useState(-1);
@@ -48,22 +49,23 @@ export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight, dancers,
              </TouchableOpacity>
             ))}            
             </View>
+            {clickedDancer !== -1 && (
             <View style={styles.heightDisplay}>
-                  {clickedDancer !== -1 && (
                         <View>
-                        <Text style={[{fontSize: pixelsPerSquare * 5}, styles.heightHeader]}>Height</Text>
+                        <Text style={[{fontSize: textSize}, styles.heightHeader]}>Height</Text>
                         <View style={styles.heightContainer}>
                           <View>
-                            <Text style={[{fontSize: pixelsPerSquare * 5}, styles.sideText]}>{`${clickedHeight["feet"]} ft  `}</Text>
+                            <Text style={[{fontSize: textSize}, styles.sideText]}>{`${clickedHeight["feet"]} ft `}</Text>
                           </View>
                           <View>
-                            <Text style={[{fontSize: pixelsPerSquare * 5}, styles.sideText]}>{`${clickedHeight["inches"]} in`}</Text>
+                            <Text style={[{fontSize: textSize}, styles.sideText]}>{`${clickedHeight["inches"]} in`}</Text>
                           </View>
                         </View>
                       </View>
+                      
 
-                  )}
             </View>
+            )}
           </View>
           {/* Add more content here as needed */}
         </View>
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#333', // Or any color you prefer
+    color: 'white', // Or any color you prefer
   },
   modalTitle: {
     fontSize: 40,
