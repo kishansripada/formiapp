@@ -17,7 +17,7 @@ export const EvenGridText = ({cloudSettings, performanceOpen, pixelsPerSquare })
       setLineArray(tempArray)
    }, [cloudSettings]);
 
-
+   console.log(pixelsPerSquare)
    return (
       <>
       {

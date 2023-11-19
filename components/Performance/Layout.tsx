@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TouchableHighlight, ScrollView} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { supabase } from "../../lib/supabase";
-import { cloudSettings, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
+import { cloudSettings, formation, PIXELS_PER_SQUARE, PIXELS_PER_SECOND } from "../../lib/types"
 import { Grid } from "./Grid";
 import { FluidGrid } from "./FluidGrid";
 import { Dancers } from "./Dancers";
@@ -10,7 +10,6 @@ import { Timeline } from "./Timeline";
 import { Tracker } from "./Tracker";
 import { PlayButton } from "./PlayButton";
 import { MenuBar } from "./MenuBar";
-
 import { FormModal } from "./modals/FormModal";
 import { RosterModal } from "./modals/RosterModal";
 import { MediaModal } from "./modals/MediaModal";
@@ -26,7 +25,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
-   const [selectedFormation, setSelectedFormation] = useState<string>("");
+   const [selectedFormation, setSelectedFormation] = useState<formation>();
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(0);
    const [curSecond, setSecond] = useState(0);
@@ -38,6 +37,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [dimensionChange, setDimensionChange] = useState(false);
    const [position, setPosition] = useState(0);
    const [activeIndex, setActiveIndex] = useState(null);
+   const heightForTimeline =  Dimensions.get('window').height;
+   const bottomPosition =  (heightForTimeline * 0.1);
+
+   const [playing, setPlaying] = useState(false);
+
+
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -101,13 +106,13 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
       if (cloudSettings && timeline) {            
          const windowWidth = Dimensions.get('window').width;
-         const stageWidth = windowWidth * 3 / 4;
+         const stageWidth = windowWidth * .95;
          if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
             const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
             setPixelsPerSquare(squarePixel);
          } else {
             const windowHeight = Dimensions.get('window').height;
-            const stageHeight = windowHeight * 1 / 2;
+            const stageHeight = windowHeight * .95;
             const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
             setPixelsPerSquare(squarePixel);
          }
@@ -123,6 +128,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    // this is currently hardcoded as opposed to height - menuBar height. Probably not a good idea.
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
+   let iconColor = "white";
    // const modalHeight = Dimensions.get('window').height;
    return (
       <>
@@ -130,7 +136,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          <View style={styles.container}>
             <View style={styles.header}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
-                  <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor">
+                  <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                   </Svg>
                </TouchableOpacity>
@@ -140,7 +146,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             <View style={styles.body}>
             <View><MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/></View>
                <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
-               <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers}/>
+               <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers} pixelsPerSquare={pixelsPerSquare}/>
                <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <StageModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} cloudSettings={cloudSettings}/>
@@ -154,7 +160,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                >
                   {
                      cloudSettings?.stageBackground == "grid" ? <Grid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
-                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen}/> 
+                     : cloudSettings?.stageBackground == "gridfluid" ? <FluidGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/>//> 
                      :  <EmptyGrid cloudSettings={cloudSettings} performanceOpen={performanceOpen} pixelsPerSquare={pixelsPerSquare}/> 
                   } 
                   <Dancers 
@@ -165,10 +171,11 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      cloudSettings={cloudSettings} 
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
+                     playing={playing}
                   />
                </View>
                   
-               <View style={styles.player}>
+               <View style={[{bottom:bottomPosition , position: "absolute"}, styles.player]}>
 
                   <PlayButton 
                      cloudSettings={cloudSettings}
@@ -179,9 +186,14 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      lastStopped={lastStopped}
                      setLastStopped={setLastStopped}
                      timeline={timeline}
+                     playing={playing}
+                     setPlaying={setPlaying}
                   />
                   <TouchableHighlight 
-                     style={[{width: pixelsPerSecond * timeline}, styles.timeline]}
+                     style={[{width: pixelsPerSecond * timeline
+                     }, styles.timeline,
+                    ]}
+                     underlayColor="transparent"
                      onPress={updateTimeline}
                   >
                      <View style={[{width: pixelsPerSecond * timeline,
@@ -199,6 +211,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                            position={position}
                            setPosition={setPosition}
                            pixelsPerSecond={pixelsPerSecond}
+                           pixelsPerSquare={pixelsPerSquare}
                         />
                      </View>
                   </TouchableHighlight>
@@ -224,7 +237,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: Dimensions.get("window").height*0.05,
       paddingBottom: Dimensions.get("window").height*0.025,
-      flex: 0.02
+      flex: 0.02,
+      backgroundColor: "#262626",
       // You can add flex: 1 here if you want the header to be flexible
    },
    body: {
@@ -232,6 +246,7 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       alignItems: "center",
       borderRadius: 2,
+      backgroundColor: '#171717',
    },
    debug: {
       flexDirection: "row",
@@ -258,6 +273,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
+      color: '#FFFFFF',
    },
    emptyText: {
       flex: 1 / 4,
@@ -270,12 +286,13 @@ const styles = StyleSheet.create({
    timeline: {
       height: 120,
       flexDirection: "row",
-      backgroundColor: "#262626",
-      borderColor: '#dc2f79',
+      // backgroundColor: "#262626",
+      // borderColor: '#dc2f79',
       alignItems: "flex-start",
-      borderWidth: 4,
-      borderRadius: 20,
-      position: "relative",
+      // borderWidth: 4,
+      // borderRadius: 20,
+      // position: "absolute",
+      // bottom: 0,
    },
    innerView: {
       height: "100%",
