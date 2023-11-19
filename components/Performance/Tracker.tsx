@@ -4,9 +4,19 @@ import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 import React from "react";
 
-export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond }) => {
-
+export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond, pixelsPerSquare}) => {
+   
     const screenHeight = Dimensions.get('window').height;
+    const triangleBaseWidth = screenHeight / 50;
+    const triangleTop =pixelsPerSquare < 15 
+    ? -(screenHeight / 10) * 1.16
+    : -(screenHeight / 10) * 1.43;
+    const lineTop =pixelsPerSquare < 15 
+     ? 11
+    : -20;
+    const triangePosition =pixelsPerSquare < 15 
+    ? 6.5
+    : 12;
     const secondsToPosition = ( seconds: number ) => {
         return (seconds * pixelsPerSecond);
     };
@@ -22,15 +32,19 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
         cloudSettings ? 
         <View style={[
             styles.container,
-            {height: screenHeight / 10}
+            {height: (screenHeight / 10) }
         ]}>
             <View style={[
                     styles.line,
-                    { left:  position, }
+                    { left:  position,
+                    top:lineTop, }
                 ]}/>
-             <View style={[
+             <View 
+             
+             style={[
                     styles.triangle,
-                    { left:  position - 12.35,
+                    {  left: position - triangePosition,
+                        top: triangleTop,
                         borderLeftWidth: screenHeight / 100,
                         borderRightWidth: screenHeight / 100,
                         borderBottomWidth: screenHeight / 50,
@@ -46,10 +60,9 @@ export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixels
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-        flex: 1,
-        flexDirection: "row",
-        width: "100%",
-        // height: "100%",
+    flex: 1,
+    flexDirection: "column",
+    width: "100%",
     },
     text: {
         margin: 10,

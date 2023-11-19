@@ -204,6 +204,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                            position={position}
                            setPosition={setPosition}
                            pixelsPerSecond={pixelsPerSecond}
+                           pixelsPerSquare={pixelsPerSquare}
                         />
                      </View>
                   </TouchableHighlight>
