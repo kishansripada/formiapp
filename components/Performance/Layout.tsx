@@ -145,7 +145,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             </View>
             <View style={styles.body}>
             <View><MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/></View>
-               <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
+               <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes} pixelsPerSquare={pixelsPerSquare}/>
                <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers} pixelsPerSquare={pixelsPerSquare}/>
                <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
                <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
