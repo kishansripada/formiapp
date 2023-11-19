@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
-      height: 120,
+      height: '10%',
       flexDirection: "row",
       // backgroundColor: "#262626",
       // borderColor: '#dc2f79',
