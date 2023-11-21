@@ -39,6 +39,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [activeIndex, setActiveIndex] = useState(null);
    const heightForTimeline =  Dimensions.get('window').height;
    const bottomPosition =  (heightForTimeline * 0.1);
+   const [props, setProps] = useState([])
 
    const [playing, setPlaying] = useState(false);
 
@@ -69,13 +70,14 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .eq("id", performanceOpen)
          .single()
          .then((r) => {
-            setCloudSettings(r.data.settings);
             r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
             setLoading(false);
+            setProps(r.data.items)
+            setCloudSettings(r.data.settings);
          });
    }, []);
 
@@ -172,6 +174,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
                      playing={playing}
+                     props={props}
                   />
                </View>
                   
