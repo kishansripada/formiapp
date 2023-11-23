@@ -11,9 +11,6 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
    const propBaseUrl = `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/props/`
 
-   // Moved all of the styling here so that we could use pixelsPerSquare in the styling
-
-
    const coordsToPosition = (coords: { x: number; y: number }) => {
       if (!coords) return null;
       let { x, y } = coords;
@@ -146,19 +143,24 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                               {/* Conditionally render the Image with a high zIndex*/}
                               {currProp.length > 0 && (
                                  <Image 
+                                       resizeMode="contain"
                                        style={[
                                           {
                                              width: currProp[0]?.width * pixelsPerSquare,
                                              zIndex: 1,
-
-                                             ...(currProp[0].side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
-                                             ...(currProp[0].side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
-                                             ...(currProp[0].side === 'left' && { right: pixelsPerSquare * 1.35}),
-                                             ...(currProp[0].side === 'right' && { left: pixelsPerSquare * 1.35}),
-
+                                         
+                                             ...(currProp[0]?.side ? (
+                                                {
+                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                    ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                }
+                                            ) : { bottom: 1.8 * pixelsPerSquare }), // Default to top if side is not provided
+                                    
                                               
                                           },
-                                           styles.prop,
+                                           styles.prop, 
                                        ]}
                                        source={{ uri: propBaseUrl + currProp[0].url }}
                                        alt="image failed to load"
@@ -222,23 +224,29 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
 
                               {currProp.length > 0 && (
                                  <Image 
-                                    style={[
-                                       {
-                                          width: currProp[0]?.width * pixelsPerSquare,
-                                          zIndex: 1,
+                                       resizeMode="contain"
+                                       style={[
+                                          {
+                                             width: currProp[0]?.width * pixelsPerSquare,
+                                             zIndex: 1,
+                                         
+                                             ...(currProp[0]?.side ? (
+                                                {
+                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                    ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                }
+                                            ) : { bottom: 1.8 * pixelsPerSquare }), // Default to top if side is not provided
+                                    
 
-                                          ...(currProp[0].side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
-                                          ...(currProp[0].side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
-                                          ...(currProp[0].side === 'left' && { right: pixelsPerSquare * 1.35}),
-                                          ...(currProp[0].side === 'right' && { left: pixelsPerSquare * 1.35}),
-
-                                          
-                                       },
-                                        styles.prop,
-                                    ]}
-                                    source={{ uri: propBaseUrl + currProp[0].url }}
-                                    alt="image failed to load"
-                              />
+                                              
+                                          },
+                                           styles.prop, 
+                                       ]}
+                                       source={{ uri: propBaseUrl + currProp[0].url }}
+                                       alt="image failed to load"
+                                 />
                            )}
                         </View>
                      )
