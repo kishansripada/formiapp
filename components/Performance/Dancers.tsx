@@ -111,6 +111,9 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
                   const currProp = props.filter((prop) => (prop.id == pos?.itemId))
+                  if (currProp[0]?.width <= 0){
+                     currProp[0].width = 0
+                  }
 
                   if (formationNum == 0 || playing === false || percentThroughTransition === 1){
                    
