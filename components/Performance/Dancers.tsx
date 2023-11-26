@@ -140,7 +140,13 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                                  }, styles.name
                               ]}>{curDancer[0]?.name.split(' ')[0]}</Text>
 
-                              {/* Conditionally render the Image with a high zIndex*/}
+                              {/* Conditionally render the Image*/}
+                              {/* The props render and follow the dancer however their placement has been 
+                              difficult to match perfectly to the web app, they follow the dancers and are 
+                              oriented based on the side variable however it does not look perfect. if you 
+                              would rather not have them appear at all just comment out the currProp block 
+                              below and its matching block further down in the file, it might help to have
+                               a height variable passed in later on*/}
                               {currProp.length > 0 && (
                                  <Image 
                                        resizeMode="contain"
@@ -151,7 +157,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                                          
                                              ...(currProp[0]?.side ? (
                                                 {
-                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.4 * pixelsPerSquare }),
                                                     ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
                                                     ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}),
                                                     ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
@@ -232,8 +238,8 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                                          
                                              ...(currProp[0]?.side ? (
                                                 {
-                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.8 * pixelsPerSquare }),
-                                                    ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
+                                                   ...(currProp[0]?.side === 'top' && { bottom: 1.4 * pixelsPerSquare }),
+                                                   ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
                                                     ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}), 
                                                     ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
                                                 }
