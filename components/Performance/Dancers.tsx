@@ -146,7 +146,14 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                         )
                      }
                      else if(pos?.transitionType === "cubic"){
-                        transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, pos?.controlPointStart, pos?.controlPointEnd);
+                        let cpt1 = coordsToPosition(pos?.controlPointStart)
+                        let cpt2 = {x: cpt1.left, y: cpt1.top}
+
+                        let end1 = coordsToPosition(pos?.controlPointEnd)
+                        let end2 = {x: end1.left, y: end1.top}
+                        // Pass the control points through the coords to position function 
+
+                        transitionPosition = cubic(startPosition, endPosition, percentThroughTransition, cpt2, end2);
 
                      }
                      else{
