@@ -162,7 +162,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                                                     ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}),
                                                     ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
                                                 }
-                                            ) : { bottom: 1.8 * pixelsPerSquare }), // Default to top if side is not provided
+                                            ) : { bottom: 1.4 * pixelsPerSquare }), // Default to top if side is not provided
                                     
                                               
                                           },
@@ -243,7 +243,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                                                     ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}), 
                                                     ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
                                                 }
-                                            ) : { bottom: 1.8 * pixelsPerSquare }), // Default to top if side is not provided
+                                            ) : { bottom: 1.4 * pixelsPerSquare }), // Default to top if side is not provided
                                     
 
                                               
