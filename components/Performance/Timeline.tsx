@@ -24,13 +24,13 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
   return (
     <>
       {cloudSettings && (
-        <ScrollView
-          horizontal={true}
+        <View
+    
           style={[styles.container,
           {   
             height: (screenHeight / 10),
           }]}
-          showsHorizontalScrollIndicator={false}
+        
         >
  
             {formations.map((formation) => (
@@ -39,7 +39,7 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                 style={[
                   styles.formation,
                   {
-                    width: 2 * (pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds)),
+                    width: (pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds)),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
                     height: screenHeight / 10,
                   },
@@ -67,13 +67,14 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
                 />
               </View>
             ))}
-          </ScrollView>
+          </View>
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
+
   container: {
     // position: "absolute",
     flex: 1,
