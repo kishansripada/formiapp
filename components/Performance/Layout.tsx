@@ -17,7 +17,7 @@ import { PropsModal } from "./modals/PropsModal";
 import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
-import React from "react";
+import React from "react"
 import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 
@@ -39,8 +39,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [activeIndex, setActiveIndex] = useState(null);
    const heightForTimeline =  Dimensions.get('window').height;
    const bottomPosition =  (heightForTimeline * 0.1);
+   const [props, setProps] = useState([])
 
    const [playing, setPlaying] = useState(false);
+
 
 
    
@@ -70,13 +72,14 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .eq("id", performanceOpen)
          .single()
          .then((r) => {
-            setCloudSettings(r.data.settings);
             r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
             setLoading(false);
+            setProps(r.data.items)
+            setCloudSettings(r.data.settings);
          });
    }, []);
 
@@ -159,6 +162,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          
          setPixelsPerSecond(secondPixel);
       }
+
       
   }, [cloudSettings, timeline]);
   
@@ -170,12 +174,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
-   // const modalHeight = Dimensions.get('window').height;
-   return (
+   // const modalHeight = Dimensions.get('window').height; 
+   return ( 
       <>
-      {cloudSettings ?
+      {cloudSettings ?  
          <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, {flex:  horizontalMode === true || Dimensions.get('window').height < 1050 ? 0.03  : 0.02}]}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -213,6 +217,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
                      playing={playing}
+                     props={props}
                   />
                </View>
                   
