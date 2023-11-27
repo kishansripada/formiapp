@@ -1,17 +1,15 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SQUARE } from "../../lib/types";
 import {linear, cubic} from "./transitionTypes"
 import React from "react";
 
 
-export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare, playing}) => {
+export const Dancers = ({selectedFormation, setSelectedFormation, dancers, formations, cloudSettings, curSecond, pixelsPerSquare, playing, props}) => {
    const [formationNum, setFormationNum] = useState(0);
    const [percentThroughTransition, setPercentThroughTransition] = useState(0);
-
-   // Moved all of the styling here so that we could use pixelsPerSquare in the styling
-
+   const propBaseUrl = `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/props/`
 
    const coordsToPosition = (coords: { x: number; y: number }) => {
       if (!coords) return null;
@@ -69,6 +67,13 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
         alignItems: "center",
         alignContent: "center",
      },
+     prop:{
+      position: "absolute",
+      height: undefined, 
+      alignItems: "center",
+      alignContent: "center",
+      aspectRatio: 1, // This ensures that the height is the same as the width
+     },
      name: {
         color: '#FFFFFF',
         textAlign: "center",
@@ -105,31 +110,73 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
             {
                selectedFormation ? selectedFormation.positions.map((pos, index) => {
                   const curDancer = dancers.filter((dancer) => (dancer.id == pos.id))
-                  
-
+                  const currProp = props.filter((prop) => (prop.id == pos?.itemId))
+                  if (currProp[0]?.width <= 0){
+                     currProp[0].width = 0
+                  }
 
                   if (formationNum == 0 || playing === false || percentThroughTransition === 1){
+                   
                      return (
-                        <View 
-                           key={pos.id}
-                           style={[
-                              {
-                                 left: coordsToPosition({x: pos.position.x, y: pos.position.y}).left,
-                                 top: coordsToPosition({x: pos.position.x, y: pos.position.y}).top,
-                              }, styles.dancer,
-                           ]}
-                        >
-                        <View style={[
-         
+                           <View 
+                              key={pos.id}
+                              style={[
+                                 {
+                                       left: coordsToPosition({x: pos.position.x, y: pos.position.y}).left,
+                                       top: coordsToPosition({x: pos.position.x, y: pos.position.y}).top,
+                                 }, styles.dancer,
+                              ]}
+                           >
+                              
+                  
+                              
+                              <View style={[
                                  curDancer[0]?.shape === "square" ? [styles.dancerIconSquare, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}] :
                                  curDancer[0]?.shape === "triangle" ? [styles.dancerIconTriangle, {borderBottomColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"},] :
-                                 [styles.dancerIconCircle, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}]
-                        ]}/>
-                           <Text style={[
-                              {
-                                 fontSize: pixelsPerSquare * 2 / 3,
-                              },styles.name]}>{curDancer[0]?.name.split(' ')[0]}</Text>
-                        </View>
+                                 [styles.dancerIconCircle, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}],
+                                 { zIndex: 0 } 
+                              ]}/>
+                              <Text style={[  
+                                 {
+                                       fontSize: pixelsPerSquare * 2 / 3,
+                                       zIndex: 0,
+                                 }, styles.name
+                              ]}>{curDancer[0]?.name.split(' ')[0]}</Text>
+
+                              {/* Conditionally render the Image*/}
+                              {/* The props render and follow the dancer however their placement has been 
+                              difficult to match perfectly to the web app, they follow the dancers and are 
+                              oriented based on the side variable however it does not look perfect. if you 
+                              would rather not have them appear at all just comment out the currProp block 
+                              below and its matching block further down in the file, it might help to have
+                               a height variable passed in later on*/}
+                              {currProp.length > 0 && (
+                                 <Image 
+                                       resizeMode="contain"
+                                       style={[
+                                          {
+                                             width: currProp[0]?.width * pixelsPerSquare,
+                                             zIndex: 1,
+                                         
+                                             ...(currProp[0]?.side ? (
+                                                {
+                                                    ...(currProp[0]?.side === 'top' && { bottom: 1.4 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                    ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                }
+                                            ) : { bottom: 1.4 * pixelsPerSquare }), // Default to top if side is not provided
+                                    
+                                              
+                                          },
+                                           styles.prop, 
+                                       ]}
+                                       source={{ uri: propBaseUrl + currProp[0].url }}
+                                       alt="image failed to load"
+                                 />
+                              )}
+                           </View>
+                                             
                      )
                      
                   } 
@@ -183,10 +230,35 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                               {
                                  fontSize: pixelsPerSquare * 2 / 3,
                               },styles.name]}>{curDancer[0]?.name.split(' ')[0]}</Text>
+
+                              {currProp.length > 0 && (
+                                 <Image 
+                                       resizeMode="contain"
+                                       style={[
+                                          {
+                                             width: currProp[0]?.width * pixelsPerSquare,
+                                             zIndex: 1,
+                                         
+                                             ...(currProp[0]?.side ? (
+                                                {
+                                                   ...(currProp[0]?.side === 'top' && { bottom: 1.4 * pixelsPerSquare }),
+                                                   ...(currProp[0]?.side === 'bottom' && { top: 0.9 * pixelsPerSquare }),
+                                                    ...(currProp[0]?.side === 'left' && { right: pixelsPerSquare * 1.35, bottom: "40%"}), 
+                                                    ...(currProp[0]?.side === 'right' && { left: pixelsPerSquare * 1.35, bottom: "40%"}),
+                                                }
+                                            ) : { bottom: 1.4 * pixelsPerSquare }), // Default to top if side is not provided
+                                    
+
+                                              
+                                          },
+                                           styles.prop, 
+                                       ]}
+                                       source={{ uri: propBaseUrl + currProp[0].url }}
+                                       alt="image failed to load"
+                                 />
+                           )}
                         </View>
                      )
-                     
-
                   }
                   
                }) : <></>
