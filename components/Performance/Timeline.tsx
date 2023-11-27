@@ -1,7 +1,7 @@
 import { ScreenHeight } from "@rneui/base";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 
-import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity, ScrollView } from "react-native";
 
 import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types";
@@ -23,61 +23,66 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
 
   return (
     <>
-      {cloudSettings ? (
-        <View style={styles.container}>
-          {formations.map((formation) => {
-            return (
+      {cloudSettings && (
+        <View
+    
+          style={[styles.container,
+          {   
+            height: (screenHeight / 10),
+          }]}
+        
+        >
+ 
+            {formations.map((formation) => (
               <View
                 key={formation.id}
-
                 style={[
                   styles.formation,
                   {
-                    width: pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds),
+                    width: (pixelsPerSecond * (formation.durationSeconds + formation.transition.durationSeconds)),
                     borderColor: selectedFormation?.id === formation?.id ? '#dc2f79' : '#525252',
-                    height: screenHeight / 10,// height: Dimensions.get('window').height}
+                    height: screenHeight / 10,
                   },
                 ]}
               >
-          
-                  <Text onLayout={checkTextOverflow} numberOfLines={1} ellipsizeMode='clip'
+                <Text
+                  onLayout={checkTextOverflow}
+                  numberOfLines={1}
+                  ellipsizeMode='clip'
                   style={[
-                    styles.text, {
-                      fontSize: screenHeight / 60,
-                    }
-                  ]}>
-                    {formation.name}
-                  </Text>
-                <View style={styles.line} >
-                </View>
-                <View style={[
-                  styles.transitionBox,
-                  {
-                    width: `${(formation.transition.durationSeconds / (formation.transition.durationSeconds + formation.durationSeconds)) * 100}%`
-                  }
+                    styles.text,
+                    { fontSize: screenHeight / 60 }
                   ]}
                 >
-                </View>
+                  {formation.name}
+                </Text>
+                <View style={styles.line} />
+                <View
+                  style={[
+                    styles.transitionBox,
+                    {
+                      width: `${(formation.transition.durationSeconds / (formation.transition.durationSeconds + formation.durationSeconds)) * 100}%`
+                    }
+                  ]}
+                />
               </View>
-            );
-          })}
-        </View>
-      ) : (
-        <></>
+            ))}
+          </View>
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
+
   container: {
-    position: "absolute",
+    // position: "absolute",
     flex: 1,
     flexDirection: "row",
     width: "100%",
     height: "100%",
-    justifyContent: "space-evenly",
-    alignItems: "center",
+    // justifyContent: "space-evenly",
+    // alignItems: "center",
   },
   line: {
     borderColor: '#414141',

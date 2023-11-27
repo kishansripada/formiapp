@@ -4,19 +4,17 @@ import { supabase } from "../../lib/supabase";
 import { cloudSettings, formation, PIXELS_PER_SECOND } from "../../lib/types"
 import React from "react";
 
-export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond, pixelsPerSquare}) => {
+export const Tracker = ({cloudSettings, curSecond, position, setPosition, pixelsPerSecond}) => {
    
     const screenHeight = Dimensions.get('window').height;
-    const triangleBaseWidth = screenHeight / 50;
-    const triangleTop =pixelsPerSquare < 15 
-    ? -(screenHeight / 10) * 1.16
-    : -(screenHeight / 10) * 1.43;
-    const lineTop =pixelsPerSquare < 15 
-     ? 11
-    : -20;
-    const triangePosition =pixelsPerSquare < 15 
-    ? 6.5
-    : 12;
+
+    const triangleTop = -(screenHeight / 10) * 1.20;
+
+    const lineTop =screenHeight< 1000
+     ? screenHeight / 100
+    : -25;
+    const triangePosition = (screenHeight / 100) * .825;
+
     const secondsToPosition = ( seconds: number ) => {
         return (seconds * pixelsPerSecond);
     };
