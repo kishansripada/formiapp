@@ -18,7 +18,6 @@ import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react";
-import RNRestart from 'react-native-restart';
 import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 
