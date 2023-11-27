@@ -37,7 +37,7 @@ export const HorizontalGridLines = ({cloudSettings, performanceOpen }) => {
         </View>
         : <></>
       }
-      </>
+      </> 
    );
 }
 
