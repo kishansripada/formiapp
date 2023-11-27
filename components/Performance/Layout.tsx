@@ -18,6 +18,7 @@ import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react"
+import { isTablet } from 'react-native-device-info';
 import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 
@@ -41,6 +42,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const bottomPosition =  (heightForTimeline * 0.1);
 
    const [playing, setPlaying] = useState(false);
+   // const isTabletDevice = isTablet();
+
 
 
    
@@ -121,7 +124,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          setPixelsPerSecond(secondPixel);
       }
    }, [cloudSettings, timeline]);
-
+  
    useEffect(() => {
       fetchTimelineLength(); 
    }, [formations]);
@@ -129,12 +132,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
-   // const modalHeight = Dimensions.get('window').height;
-   return (
+   // const modalHeight = Dimensions.get('window').height; 
+   return ( 
       <>
-      {cloudSettings ?
+      {cloudSettings ?  
          <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, {flex:  horizontalMode === true || Dimensions.get('window').height < 1050 ? 0.03  : 0.02}]}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
