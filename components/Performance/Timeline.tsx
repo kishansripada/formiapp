@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     // fontSize: 20,
     textAlign: "center",
     flex: 1,
-    color: '#FFFFFF',
+    color: '#FFFFFF', 
   },
 
   formation: {

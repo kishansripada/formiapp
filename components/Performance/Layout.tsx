@@ -40,6 +40,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [activeIndex, setActiveIndex] = useState(null);
    const heightForTimeline =  Dimensions.get('window').height;
    const bottomPosition =  (heightForTimeline * 0.1);
+   const timelineHeight = heightForTimeline / 10;
 
    const [playing, setPlaying] = useState(false);
 
@@ -90,37 +91,32 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          if (cloudSettings && timeline) {
             const windowWidth = Dimensions.get('window').width;
             const windowHeight = Dimensions.get('window').height;
-    
-            // Constants for other UI elements heights
-            const timelineHeight = windowHeight * 0.1; // Example: Timeline takes up 10% of screen height
             const headerHeight = windowHeight / 12; // Define header height if any
     
             // Calculate the maximum available height for the stage
-            const maxAvailableHeight = windowHeight - timelineHeight - headerHeight;
+            const maxAvailableHeight = windowHeight - (20 * timelineHeight) - headerHeight;
     
             let stageHeight;
+            const aspectRatio = cloudSettings.stageDimensions.width / cloudSettings.stageDimensions.height;
+            let maxStageWidth = maxAvailableHeight * aspectRatio;
             if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
                 // Stage width calculation
-                let stageWidth = windowWidth * .95;
-                stageWidth = windowWidth * 0.95 > maxAvailableHeight ? stageWidth = windowWidth * 0.65 : stageWidth = windowWidth * 0.95;
-  
+               let stageWidth;
+               stageWidth = windowWidth * 0.95;
+               stageHeight = (windowWidth * 0.95 / cloudSettings.stageDimensions.width ) * cloudSettings.stageDimensions.height;
+               console.log(aspectRatio);
+               if(stageHeight > maxAvailableHeight) {
+                  stageHeight = maxAvailableHeight;
+                  stageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width;
+               }
               const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
               setPixelsPerSquare(squarePixel);
-  
             } else {
                 // Directly use the max available height for taller stages
-                stageHeight = maxAvailableHeight;
+                stageHeight = windowHeight * 0.95 > maxAvailableHeight ? stageHeight = windowHeight * 0.65 : stageHeight = windowHeight * 0.95;
                 const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height);
                 setPixelsPerSquare(squarePixel);
             }
-    
-            // Adjust stage height if it exceeds the available space
-            if (stageHeight > maxAvailableHeight) {
-                stageHeight = maxAvailableHeight;
-                const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height);
-                setPixelsPerSquare(squarePixel);
-            }
-    
             const secondPixel = Dimensions.get('window').height * 0.05; // Timeline pixel calculation
             setPixelsPerSecond(secondPixel);
         }
@@ -131,37 +127,32 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       if (cloudSettings && timeline) {
           const windowWidth = Dimensions.get('window').width;
           const windowHeight = Dimensions.get('window').height;
-  
-          // Constants for other UI elements heights
-          const timelineHeight = windowHeight * 0.1; // Example: Timeline takes up 10% of screen height
           const headerHeight = windowHeight / 12; // Define header height if any
   
           // Calculate the maximum available height for the stage
-          const maxAvailableHeight = windowHeight - timelineHeight - headerHeight;
+          const maxAvailableHeight = windowHeight - (10 * timelineHeight) - headerHeight;
   
           let stageHeight;
+          const aspectRatio = cloudSettings.stageDimensions.width / cloudSettings.stageDimensions.height;
+          let maxStageWidth = maxAvailableHeight * aspectRatio;
           if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
               // Stage width calculation
-              let stageWidth = windowWidth * .95;
-              stageWidth = windowWidth * 0.95 > maxAvailableHeight ? stageWidth = windowWidth * 0.65 : stageWidth = windowWidth * 0.95;
-
+            let stageWidth; 
+            stageWidth = windowWidth * 0.95;
+            stageHeight = (windowWidth * 0.95 / cloudSettings.stageDimensions.width ) * cloudSettings.stageDimensions.height;
+            if(stageHeight > maxAvailableHeight) {
+               stageWidth = stageWidth * 0.6; 
+               stageHeight = (windowWidth * 0.95 / cloudSettings.stageDimensions.width ) * cloudSettings.stageDimensions.height;
+               // stageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width;
+            }
             const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
             setPixelsPerSquare(squarePixel);
-
           } else {
               // Directly use the max available height for taller stages
-              stageHeight = maxAvailableHeight;
+              stageHeight = windowHeight * 0.95 > maxAvailableHeight ? stageHeight = windowHeight * 0.95 : stageHeight = windowHeight * 0.80;
               const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height);
               setPixelsPerSquare(squarePixel);
           }
-  
-          // Adjust stage height if it exceeds the available space
-          if (stageHeight > maxAvailableHeight) {
-              stageHeight = maxAvailableHeight;
-              const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height);
-              setPixelsPerSquare(squarePixel);
-          }
-  
           const secondPixel = Dimensions.get('window').height * 0.05; // Timeline pixel calculation
           setPixelsPerSecond(secondPixel);
       }
@@ -176,6 +167,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
    // const modalHeight = Dimensions.get('window').height;
+   // console.log(cloudSettings.stageDimensions.width / cloudSettings.stageDimensions.height)
+   
    return (
       <>
       {cloudSettings ?
@@ -336,7 +329,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
-      height: '10%',
+
       flexDirection: "row",
       // backgroundColor: "#262626",
       // borderColor: '#dc2f79',
