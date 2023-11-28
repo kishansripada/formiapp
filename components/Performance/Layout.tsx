@@ -64,7 +64,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
  }
 
    const fetchData = useCallback(async () => {
-      setLoading(true);
+      setLoading(true); 
 
       // gets the dance that is currenlty open based on the id in performanceOpen
       supabase
