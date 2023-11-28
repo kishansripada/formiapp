@@ -164,9 +164,10 @@ const styles = StyleSheet.create({
   },
   rightView:{
     marginLeft: "5%",
-    width: '50%',
+    width: '40%',
     height: '40%',
     alignSelf: "flex-start",
+    paddingRight: 40
     // backgroundColor: "red",
   },
 
