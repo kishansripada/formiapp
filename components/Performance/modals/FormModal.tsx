@@ -19,12 +19,11 @@ export const FormModal = ({
   modalHeight,
   title,
   text,
-  pixelsPerSquare,
 }) => {
   const { width } = Dimensions.get("window");
   const visible = activeIndex === 0;
-  const titleSize = pixelsPerSquare * 2;
-  const textSize = pixelsPerSquare * 1.5;
+  const titleSize = modalHeight/20;
+  const textSize =  modalHeight/30;
 
   return (
     <Modal
@@ -38,7 +37,7 @@ export const FormModal = ({
           style={styles.closeButton}
           onPress={() => setActiveIndex(null)}
         >
-          <Text style={[{fontSize: textSize}, styles.closeButtonText]}>X</Text>
+          <Text style={[{fontSize: modalHeight/32}, styles.closeButtonText]}>X</Text>
         </TouchableOpacity>
         <Text style={[{fontSize: titleSize}, styles.modalTitle]}>{title}</Text>
         {/* <ScrollView> */}

@@ -1,12 +1,13 @@
 import React from "react";
 import {View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { cloudSettings } from "../../../lib/types";
 
 export const StageModal = ({ activeIndex, setActiveIndex, modalHeight, cloudSettings }) => {
   const { width } = Dimensions.get('window');
   const visible = activeIndex === 4;
-
+  const titleSize = modalHeight/20;
+  const subHeadingSize = modalHeight/32;
+  const textSize = modalHeight/40;
   return (
     <Modal
       isVisible={visible}
@@ -19,18 +20,18 @@ export const StageModal = ({ activeIndex, setActiveIndex, modalHeight, cloudSett
             style={styles.closeButton}
             onPress={() => setActiveIndex(null)}
           >
-            <Text style={styles.closeButtonText}>X</Text>
+            <Text style={[{fontSize: modalHeight/32}, styles.closeButtonText]}>X</Text>
           </TouchableOpacity>
-          <Text style={styles.modalTitle}>{"Stage"}</Text>
+          <Text style={[{fontSize: titleSize}, styles.modalTitle]}>{"Stage"}</Text>
           <View>
             <View style={styles.setting}>
-              <Text style={styles.settingTitle}>Stage Dimensions (feet)</Text>
-              <Text style={styles.settingText}>Width: {cloudSettings.stageDimensions.width}</Text>
-              <Text style={styles.settingText}>Height: {cloudSettings.stageDimensions.height}</Text>
+              <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Stage Dimensions (feet)</Text>
+              <Text style={[{fontSize: textSize}, styles.settingText]}>Width: {cloudSettings.stageDimensions.width}</Text>
+              <Text style={[{fontSize: textSize}, styles.settingText]}>Height: {cloudSettings.stageDimensions.height}</Text>
             </View>
             <View style={styles.setting}>
-              <Text style={styles.settingTitle}>Stage Background</Text>
-              <Text style={styles.settingText}>{cloudSettings.stageBackground === "grid" ? "Grid" : cloudSettings.stageBackground === "gridfluid" ? "Fluid Grid" : ""}</Text>
+              <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Stage Background</Text>
+              <Text style={[{fontSize: textSize}, styles.settingText]}>{cloudSettings.stageBackground === "grid" ? "Grid" : cloudSettings.stageBackground === "gridfluid" ? "Fluid Grid" : ""}</Text>
             </View>
             {
               cloudSettings?.stageBackground === "grid" ? (
@@ -38,14 +39,14 @@ export const StageModal = ({ activeIndex, setActiveIndex, modalHeight, cloudSett
               ) : (cloudSettings?.stageBackground === "gridfluid") ? (
                 <View>
                   <View style={styles.setting}>
-                    <Text style={styles.settingTitle}>Stage Lines</Text>
-                    <Text style={styles.settingText}>Vertical: {cloudSettings.gridSubdivisions}</Text>
-                    <Text style={styles.settingText}>Horizontal: {cloudSettings.horizontalGridSubdivisions}</Text>
+                    <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Stage Lines</Text>
+                    <Text style={[{fontSize: textSize}, styles.settingText]}>Vertical: {cloudSettings.gridSubdivisions}</Text>
+                    <Text style={[{fontSize: textSize}, styles.settingText]}>Horizontal: {cloudSettings.horizontalGridSubdivisions}</Text>
                   </View>
                   <View style={styles.setting}>
-                    <Text style={styles.settingTitle}>Subdivisions (grid snap)</Text>
-                    <Text style={styles.settingText}>Vertical: {cloudSettings.verticalFineDivisions}</Text>
-                    <Text style={styles.settingText}>Horizontal: {cloudSettings.horizontalFineDivisions}</Text>
+                    <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Subdivisions (grid snap)</Text>
+                    <Text style={[{fontSize: textSize}, styles.settingText]}>Vertical: {cloudSettings.verticalFineDivisions}</Text>
+                    <Text style={[{fontSize: textSize}, styles.settingText]}>Horizontal: {cloudSettings.horizontalFineDivisions}</Text>
                   </View>
                 </View>
               ) : (<View/>)
@@ -71,31 +72,27 @@ const styles = StyleSheet.create({
     margin: 10
   },
   closeButtonText: {
-    fontSize: 24,
     fontWeight: 'bold',
     color: 'white', // Or any color you prefer
   },
   modalTitle: {
-    fontSize: 72,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     marginBottom: 20,
   },
   settingTitle: {
-    fontSize: 36,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
   },
   settingText: {
-    fontSize: 24,
     color: 'white',
     textAlign: 'center',
     marginTop: 10,
     borderColor: 'white',
     borderWidth: 1,
-    width: '25%',
+    width: '35%',
   },
   setting: {
     marginBottom: 25,
