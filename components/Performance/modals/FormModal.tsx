@@ -22,6 +22,8 @@ export const FormModal = ({
 }) => {
   const { width } = Dimensions.get("window");
   const visible = activeIndex === 0;
+  const titleSize = modalHeight/20;
+  const textSize =  modalHeight/30;
 
   return (
     <Modal
@@ -35,12 +37,12 @@ export const FormModal = ({
           style={styles.closeButton}
           onPress={() => setActiveIndex(null)}
         >
-          <Text style={styles.closeButtonText}>X</Text>
+          <Text style={[{fontSize: modalHeight/32}, styles.closeButtonText]}>X</Text>
         </TouchableOpacity>
-        <Text style={styles.modalTitle}>{title}</Text>
+        <Text style={[{fontSize: titleSize}, styles.modalTitle]}>{title}</Text>
         {/* <ScrollView> */}
         <TextInput
-          style={styles.textBox}
+          style={[{fontSize: textSize}, styles.textBox]}
           editable={false} // currently view-only
           value={text}
           // placeholder="Notes..."
@@ -73,7 +75,6 @@ const styles = StyleSheet.create({
     padding: "3%",
     paddingTop: "3%",
     paddingBottom: "3%", 
-    fontSize: 30,
     color: "white",
     alignSelf: "center",
     textAlignVertical: "top", // This ensures that the text starts from the top on Android
@@ -95,12 +96,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   closeButtonText: {
-    fontSize: 30,
     fontWeight: "bold",
     color: "white", // Or any color you prefer
   },
   modalTitle: {
-    fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     // paddingLeft: "6%",

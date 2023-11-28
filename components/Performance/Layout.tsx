@@ -28,6 +28,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
+   const [soundCloudId, setSoundCloudId] = useState<string>("");
    const [selectedFormation, setSelectedFormation] = useState<formation>();
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(0);
@@ -93,15 +94,18 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .eq("id", performanceOpen)
          .single()
          .then((r) => {
+
             r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
             setAudioURL(r.data.soundCloudId)
-            setLoading(false);
+            setSoundCloudId(r.data.soundCloudId ? r.data.soundCloudId : "");
             setProps(r.data.items)
+            setLoading(false);
             setCloudSettings(r.data.settings);
+        
          });
    }, []);
 
@@ -197,9 +201,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       
   }, [cloudSettings, timeline]);
   
-
+  
    useEffect(() => {
-      fetchTimelineLength(); 
+      fetchTimelineLength();  
    }, [formations]);
    // this is currently hardcoded as opposed to height - menuBar height. Probably not a good idea.
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
@@ -223,11 +227,11 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             <View style={styles.body}>
                <MenuBar screenHeight={Dimensions.get('window').height} screenWidth={Dimensions.get('window').width} activeIndex={activeIndex} setActiveIndex={setActiveIndex}/>
                <FormModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} title={selectedFormation?.name} text={selectedFormation?.notes}/>
-               <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers} pixelsPerSquare={pixelsPerSquare}/>
-               <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
-               <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <RosterModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} dancers={dancers}/>
+               <MediaModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} soundCloudId = {soundCloudId}/>
+               <PropsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} props ={props}/>
                <StageModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} cloudSettings={cloudSettings}/>
-               <SettingsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight}/>
+               <SettingsModal activeIndex={activeIndex} setActiveIndex={setActiveIndex} modalHeight={modalHeight} cloudSettings={cloudSettings}/>
                <View 
                   style={[{
                         width: (cloudSettings?.stageDimensions.width) * pixelsPerSquare,
