@@ -18,6 +18,7 @@ import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react"
+import { Audio } from 'expo-av';
 import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 
@@ -41,11 +42,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const heightForTimeline =  Dimensions.get('window').height;
    const bottomPosition =  (heightForTimeline * 0.1);
    const [props, setProps] = useState([])
-
+   const [soundRef, setSoundRef] = useState(new Audio.Sound());
    const [playing, setPlaying] = useState(false);
-
-
-
+   const [muted, setMuted] = useState(false);
+   const [audioURL, setAudioURL] = useState("")
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -59,6 +59,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
+      soundRef.setPositionAsync(newSecond * 1000)
       setLastStopped(newSecond)
       setSecond(newSecond);
  }
@@ -82,10 +83,21 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             setSoundCloudId(r.data.soundCloudId ? r.data.soundCloudId : "");
             setProps(r.data.items)
             setLoading(false);
+            setAudioURL(r.data.soundCloudId)
             setCloudSettings(r.data.settings);
         
          });
    }, []);
+
+   const fetchSound = async () => {
+      const finalURL = audioURL.replaceAll(" ", "%20")
+      try {
+         await soundRef.loadAsync( { uri: finalURL } )
+         setSoundRef(soundRef)
+      } catch(error) {
+         console.log(error)
+      }
+   }
 
    useEffect(() => {
       fetchData();
@@ -169,7 +181,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
       
   }, [cloudSettings, timeline]);
-  
+
+  useEffect(() => {
+      if (audioURL) {
+         fetchSound();
+      }
+   }, [audioURL])
   
    useEffect(() => {
       fetchTimelineLength();  
@@ -238,6 +255,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      timeline={timeline}
                      playing={playing}
                      setPlaying={setPlaying}
+                     sound={soundRef}
+                     muted={muted}
+                     setMuted={setMuted}
                   />
                <ScrollView horizontal={true}
                
