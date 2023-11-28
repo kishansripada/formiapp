@@ -18,8 +18,9 @@ import { StageModal } from "./modals/StageModal";
 import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react"
-import { ScreenHeight, ScreenWidth } from "@rneui/base";
+import { Audio } from 'expo-av';
 
+import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
 export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [formations, setFormations] = useState([]);
@@ -38,6 +39,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [position, setPosition] = useState(0);
    const [activeIndex, setActiveIndex] = useState(null);
    const [playing, setPlaying] = useState(false);
+   const [muted, setMuted] = useState(false);
+   // const [sound, setSound] = useState();
+   // const { sound: playbackObject } = Audio.Sound.createAsync({uri: `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/audiofiles/aa495069-b878-4e9c-981a-578a8f4b3701/onlymp3.to - Rick Astley Never Gonna Give You Up Official Music Video -dQw4w9WgXcQ-192k-1697998991.mp3`});
+   const soundRef = useRef(new Audio.Sound());
+
+   const [audioURL, setAudioURL] = useState("")
 
    const windowWidth = Dimensions.get('window').width;
    const windowHeight = Dimensions.get('window').height;
@@ -55,7 +62,21 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
       setLastStopped(newSecond)
       setSecond(newSecond);
- }
+   }
+
+   const fetchSound = async () => {
+      console.log("Loading")
+      const { sound, status } = await Audio.Sound.createAsync( { uri: audioURL } );
+      console.log(status)
+      if (status.isLoaded) {
+         soundRef.current = sound
+      }
+      // setSound(sound);
+      console.log("Loaded")
+
+      await soundRef.current.playAsync();
+      console.log("Playing")
+   }
 
    const fetchData = useCallback(async () => {
       setLoading(true);
@@ -73,9 +94,17 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
+            setAudioURL(r.data.soundCloudId)
             setLoading(false);
          });
    }, []);
+
+   useEffect(() => {
+      if (audioURL) {
+         fetchSound();
+         // console.log(sound.getStatusAsync())
+      }
+   }, [audioURL])
 
    useEffect(() => {
       fetchData();
@@ -101,16 +130,19 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    useEffect(() => {
       // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
-      if (cloudSettings && timeline) {            
-         const stageWidth = windowWidth * .95;
-         const widthSquarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
-         const stageHeight = windowHeight * (1 - 149/375) * .95;
-         const heightSquarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
-         setPixelsPerSquare(Math.min(widthSquarePixel, heightSquarePixel));
+      if (cloudSettings) {          
+         if (timeline) {  
+            const stageWidth = windowWidth * .95;
+            const widthSquarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+            const stageHeight = windowHeight * (1 - 149/375) * .95;
+            const heightSquarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
+            setPixelsPerSquare(Math.min(widthSquarePixel, heightSquarePixel));
 
-         const secondPixel = Math.ceil(stageWidth / timeline);
-         setPixelsPerSecond(secondPixel);
+            const secondPixel = Math.ceil(stageWidth / timeline);
+            setPixelsPerSecond(secondPixel);
+         }
       }
+      
    }, [cloudSettings, timeline]);
 
    useEffect(() => {
@@ -179,6 +211,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      playing={playing}
                      setPlaying={setPlaying}
                      pixelsPerSquare={pixelsPerSquare}
+                     sound={soundRef}
+                     muted={muted}
+                     setMuted={setMuted}
                   />
                   <TouchableHighlight 
                      style={[{width: pixelsPerSecond * timeline
@@ -282,7 +317,7 @@ const styles = StyleSheet.create({
    },
    innerView: {
       height: "100%",
-      flexDirection: "row",
+      flexDirection: "column",
       borderColor: '#dc2f79',
       alignItems: "flex-start",
    },

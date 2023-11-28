@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#FFFFFF',
   },
-
   formation: {
     borderWidth: 3,
     borderColor: '#dc2f79',
@@ -105,5 +104,4 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     backgroundColor: "#dc2f79",
   }
-
 });
