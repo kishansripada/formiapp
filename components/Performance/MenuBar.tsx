@@ -39,7 +39,7 @@ export const MenuBar = ({ screenWidth , screenHeight, activeIndex, setActiveInde
     
 
   
-  let iconColor = "white";
+  let iconColor = "#a3a3a3";
   let clickedColor = "#dc2f79";
 
   // button svgs and labels

@@ -219,12 +219,9 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                            ]}
                         >
                         <View style={[
-                             
-                                 { backgroundColor: curDancer[0]?.color, borderBottomColor: curDancer[0]?.color,},
-                                 curDancer[0]?.shape === "circle" ? styles.dancerIconCircle : 
-                                 curDancer[0]?.shape === "square" ? styles.dancerIconSquare :
-                                 curDancer[0]?.shape === "triangle" ? styles.dancerIconTriangle :
-                                 styles.dancerIconCircle 
+                             curDancer[0]?.shape === "square" ? [styles.dancerIconSquare, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}] :
+                             curDancer[0]?.shape === "triangle" ? [styles.dancerIconTriangle, {borderBottomColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"},] :
+                             [styles.dancerIconCircle, {backgroundColor: curDancer[0]?.color ? curDancer[0]?.color : "#db2877"}]
                         ]}/>
                            <Text style={[
                               {
