@@ -81,6 +81,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
          >
             <View style={{
                // color: 'white',
+               marginRight: 10,
                width: pixelsPerSquare,
                height: pixelsPerSquare,
             }}>
@@ -104,6 +105,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
                <View style={{
                   width: pixelsPerSquare,
                   height: pixelsPerSquare,
+                  marginRight: 10,
                }}>
                   {
                      playing ? (
@@ -134,9 +136,10 @@ const styles = StyleSheet.create({
     container: {
       position: "relative",
       flexDirection: "row",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       alignItems: "center",
       width: "100%",
+      paddingLeft: '4%'
     },
     timer: {
       color: "#FFFFFF",
