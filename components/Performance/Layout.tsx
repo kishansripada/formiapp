@@ -26,7 +26,6 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [dancers, setDancers] = useState([]);
    const [danceName, setDanceName] = useState<string>("");
    const [soundCloudId, setSoundCloudId] = useState<string>("");
-   const [props, setProps] = useState([]);
    const [selectedFormation, setSelectedFormation] = useState<formation>();
    const [cloudSettings, setCloudSettings] = useState<cloudSettings>();
    const [timeline, setTimeline] = useState(0);
@@ -171,9 +170,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       
   }, [cloudSettings, timeline]);
   
-
+  
    useEffect(() => {
-      fetchTimelineLength(); 
+      fetchTimelineLength();  
    }, [formations]);
    // this is currently hardcoded as opposed to height - menuBar height. Probably not a good idea.
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;

@@ -31,12 +31,15 @@ export const StageModal = ({ activeIndex, setActiveIndex, modalHeight, cloudSett
             </View>
             <View style={styles.setting}>
               <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Stage Background</Text>
-              <Text style={[{fontSize: textSize}, styles.settingText]}>{cloudSettings.stageBackground === "grid" ? "Grid" : cloudSettings.stageBackground === "gridfluid" ? "Fluid Grid" : ""}</Text>
+              <Text style={[{fontSize: textSize}, styles.settingText]}>{cloudSettings.stageBackground === "grid" ? "Grid" : cloudSettings.stageBackground === "gridfluid" ? "Fluid Grid" : "None"}</Text>
+              {cloudSettings.stageBackground === "grid" ? <Text style={[{fontSize: textSize}, styles.settingText]}>Subdivisions: {cloudSettings.gridSubdivisions}</Text> : <></>}
+
             </View>
             {
               cloudSettings?.stageBackground === "grid" ? (
-                <Text style={styles.settingText}>Subdivisions: {cloudSettings.gridSubdivisions}</Text>
-              ) : (cloudSettings?.stageBackground === "gridfluid") ? (
+                <View style={styles.setting}>                
+                </View>
+                ) : (cloudSettings?.stageBackground === "gridfluid") ? ( 
                 <View>
                   <View style={styles.setting}>
                     <Text style={[{fontSize: subHeadingSize},styles.settingTitle]}>Stage Lines</Text>

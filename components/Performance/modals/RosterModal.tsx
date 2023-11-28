@@ -12,9 +12,7 @@ export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight, dancers 
   const titleSize = modalHeight/20;
   const textSize = modalHeight/32;
   const clickedHeight = clickedDancer !== -1 ? ( dancers[clickedDancer].height ? convertToFeetAndInches(dancers[clickedDancer].height) : {"feet": 6, "inches": 0}) : 0;
-
   const Container = dancers.length > 10 ? ScrollView : View;
-
   return (
     <Modal
       isVisible={visible}
@@ -217,4 +215,3 @@ const styles = StyleSheet.create({
     marginBottom: "4%"
   }
 });
-
