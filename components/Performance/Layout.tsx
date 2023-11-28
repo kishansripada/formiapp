@@ -41,8 +41,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [activeIndex, setActiveIndex] = useState(null);
    const heightForTimeline =  Dimensions.get('window').height;
    const bottomPosition =  (heightForTimeline * 0.1);
+   const [props, setProps] = useState([])
 
    const [playing, setPlaying] = useState(false);
+
 
 
    
@@ -55,6 +57,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    const updateTimeline = (event) => {
       // setPosition(event.nativeEvent.locationX)
+
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
       setLastStopped(newSecond)
@@ -71,60 +74,103 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .eq("id", performanceOpen)
          .single()
          .then((r) => {
-            setCloudSettings(r.data.settings);
+
+            r.data.formations[0].transition.durationSeconds = 0
+            setFormations(r.data.formations);
+            setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);
             setDanceName(r.data.name);
-            setFormations(r.data.formations);
-            setLoading(false);
-            setSelectedFormation(r.data.formations[0]);
             setSoundCloudId(r.data.soundCloudId ? r.data.soundCloudId : "");
-            setProps(r.data.items);
-            r.data.formations[0].transition.durationSeconds = 0;
+            setProps(r.data.items)
+            setLoading(false);
+            setCloudSettings(r.data.settings);
+        
          });
    }, []);
 
    useEffect(() => {
       fetchData();
 
+
       Dimensions.addEventListener('change', ({window}) => {
-         if (cloudSettings && timeline) {            
+         
+         if (cloudSettings && timeline) {  
+            const headerHeight =   Dimensions.get('window').height / 12
+            const timelineHeight =   Dimensions.get('window').height / 10
+            const maxScreenHeight = (Dimensions.get('window').height - headerHeight - timelineHeight) / 1.65;        
             const windowWidth = Dimensions.get('window').width;
-            const stageWidth = windowWidth * 3 / 4;
+           
+            const stageWidth = windowWidth * .925;
+            let stageHeight = stageWidth / cloudSettings.stageDimensions.width * cloudSettings.stageDimensions.height;
+            let newStageWidth = stageWidth
+   
+            if (stageHeight > maxScreenHeight){
+               stageHeight = maxScreenHeight - 10
+               newStageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width
+   
+            }
+            
+   
+
+   
+            
             if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
-               const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+               const squarePixel = Math.ceil(newStageWidth / cloudSettings.stageDimensions.width)
                setPixelsPerSquare(squarePixel);
             } else {
-               const windowHeight = Dimensions.get('window').height;
-               const stageHeight = windowHeight * 1 / 2;
                const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
                setPixelsPerSquare(squarePixel);
             }
-   
-            const secondPixel = Math.ceil(stageWidth / timeline);
-            setPixelsPerSecond(secondPixel);
+
+            let secondPixel = Math.ceil(Dimensions.get('window').width * 0.05);
+            if (Dimensions.get('window').height > Dimensions.get('window').width){
+               secondPixel = Math.ceil(Dimensions.get('window').height * 0.05);
+            }
+            
+            setPixelsPerSecond(secondPixel); 
          }
       })
-   }, []);
+   }, []); 
 
    useEffect(() => {
-      // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
-      if (cloudSettings && timeline) {            
+      if (cloudSettings && timeline) {  
+         const headerHeight =   Dimensions.get('window').height / 12
+         const timelineHeight =   Dimensions.get('window').height / 10
+         const maxScreenHeight = (Dimensions.get('window').height - headerHeight - timelineHeight) / 1.65;         
          const windowWidth = Dimensions.get('window').width;
-         const stageWidth = windowWidth * .95;
+        
+         const stageWidth = windowWidth * .925;
+         let stageHeight = stageWidth / cloudSettings.stageDimensions.width * cloudSettings.stageDimensions.height;
+         let newStageWidth = stageWidth
+
+         if (stageHeight > maxScreenHeight){
+            stageHeight = maxScreenHeight - 10
+            newStageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width
+ 
+         }
+         
+
+
+         
          if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
-            const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+            const squarePixel = Math.ceil(newStageWidth / cloudSettings.stageDimensions.width)
             setPixelsPerSquare(squarePixel);
          } else {
-            const windowHeight = Dimensions.get('window').height;
-            const stageHeight = windowHeight * .95;
             const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
             setPixelsPerSquare(squarePixel);
-         }
-
-         const secondPixel = Math.ceil(stageWidth / timeline);
+         } 
+ 
+         let secondPixel = Math.ceil(Dimensions.get('window').width * 0.05); 
+         if (Dimensions.get('window').height > Dimensions.get('window').width){
+            secondPixel = Math.ceil(Dimensions.get('window').height * 0.05);
+         } 
+         
          setPixelsPerSecond(secondPixel);
       }
-   }, [cloudSettings, timeline]);
+
+      
+  }, [cloudSettings, timeline]);
+  
 
    useEffect(() => {
       fetchTimelineLength(); 
@@ -133,12 +179,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const horizontalMode = Dimensions.get('window').height < Dimensions.get('window').width;
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
-   // const modalHeight = Dimensions.get('window').height;
-   return (
+   // const modalHeight = Dimensions.get('window').height; 
+   return ( 
       <>
-      {cloudSettings ?
+      {cloudSettings ?  
          <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, {flex:  horizontalMode === true || Dimensions.get('window').height < 1050 ? 0.03  : 0.02}]}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -176,6 +222,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
                      playing={playing}
+                     props={props}
                   />
                </View>
                   
@@ -193,13 +240,17 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      playing={playing}
                      setPlaying={setPlaying}
                   />
-                  <TouchableHighlight 
+               <ScrollView horizontal={true}
+               
+               >
+                   <TouchableHighlight 
                      style={[{width: pixelsPerSecond * timeline
                      }, styles.timeline,
                     ]}
                      underlayColor="transparent"
                      onPress={updateTimeline}
                   >
+
                      <View style={[{width: pixelsPerSecond * timeline,
                      }, styles.innerView]}>
                         <Timeline 
@@ -215,10 +266,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                            position={position}
                            setPosition={setPosition}
                            pixelsPerSecond={pixelsPerSecond}
-                           pixelsPerSquare={pixelsPerSquare}
                         />
                      </View>
                   </TouchableHighlight>
+
+               </ScrollView>
+                 
                </View>
             </View>  
          </View>
@@ -231,7 +284,7 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: "column",
-      width: "100%",
+      width: "100%", 
       height: "100%",
    },
    header: {
@@ -241,7 +294,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: Dimensions.get("window").height*0.05,
       paddingBottom: Dimensions.get("window").height*0.025,
-      flex: 0.02,
+      flex: 0.03,
       backgroundColor: "#262626",
       // You can add flex: 1 here if you want the header to be flexible
    },
@@ -251,9 +304,9 @@ const styles = StyleSheet.create({
       alignItems: "center",
       borderRadius: 2,
       backgroundColor: '#171717',
-   },
+   }, 
    debug: {
-      flexDirection: "row",
+      flexDirection: "row", 
       borderRadius: 2,
    },
    stage: {
@@ -288,7 +341,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
-      height: 120,
+      height: '10%',
       flexDirection: "row",
       // backgroundColor: "#262626",
       // borderColor: '#dc2f79',
