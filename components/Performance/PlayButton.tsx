@@ -20,6 +20,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
       setSecond((prevSecond) => {
          if (prevSecond >= timeline - .05) {
             setPlaying(false)
+            sound.pauseAsync()
             return prevSecond
          } else {
             return newSecond
@@ -31,22 +32,17 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
       if (playing) {
          setLastStopped(curSecond)
          setStartTime(0)
-         // await sound.pauseAsync()
+         await sound.pauseAsync()
       } else {
          setStartTime(Date.now())
          clearInterval(intervalID)
-         // await sound.playAsync()
+         await sound.playAsync()
       }
       setPlaying(!playing)
    }
 
    const handleMute = async () => {
-      if (muted) {
-         // console.log(sound)
-         // await sound.setStatusAsync({ shouldPlay: true })
-      } else {
-         // await sound.pauseAsync()
-      }
+      sound.setIsMutedAsync(!muted)
       setMuted(!muted)
    }
 

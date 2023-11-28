@@ -19,6 +19,8 @@ import { SettingsModal } from "./modals/SettingsModal";
 import { EmptyGrid } from "./Emptygrid";
 import React from "react"
 import { Audio } from 'expo-av';
+// import Sound from "react-native-sound"
+// import TrackPlayer, { State } from 'react-native-track-player';
 
 import { ScreenHeight, ScreenWidth } from "@rneui/base";
 
@@ -40,12 +42,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [activeIndex, setActiveIndex] = useState(null);
    const [playing, setPlaying] = useState(false);
    const [muted, setMuted] = useState(false);
-   // const [sound, setSound] = useState();
+   const [soundRef, setSoundRef] = useState(new Audio.Sound());
    // const { sound: playbackObject } = Audio.Sound.createAsync({uri: `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/audiofiles/aa495069-b878-4e9c-981a-578a8f4b3701/onlymp3.to - Rick Astley Never Gonna Give You Up Official Music Video -dQw4w9WgXcQ-192k-1697998991.mp3`});
-   const soundRef = useRef(new Audio.Sound());
-
+   // const soundRef = new Audio.Sound();
    const [audioURL, setAudioURL] = useState("")
-
    const windowWidth = Dimensions.get('window').width;
    const windowHeight = Dimensions.get('window').height;
    
@@ -60,22 +60,19 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       // setPosition(event.nativeEvent.locationX)
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
+      soundRef.setPositionAsync(newSecond * 1000)
       setLastStopped(newSecond)
       setSecond(newSecond);
    }
 
    const fetchSound = async () => {
-      console.log("Loading")
-      const { sound, status } = await Audio.Sound.createAsync( { uri: audioURL } );
-      console.log(status)
-      if (status.isLoaded) {
-         soundRef.current = sound
+      const finalURL = audioURL.replaceAll(" ", "%20")
+      try {
+         await soundRef.loadAsync( { uri: finalURL } )
+         setSoundRef(soundRef)
+      } catch(error) {
+         console.log(error)
       }
-      // setSound(sound);
-      console.log("Loaded")
-
-      await soundRef.current.playAsync();
-      console.log("Playing")
    }
 
    const fetchData = useCallback(async () => {
