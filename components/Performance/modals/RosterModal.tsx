@@ -13,8 +13,7 @@ export const RosterModal = ({ activeIndex, setActiveIndex, modalHeight, dancers,
     setClickedDancer(index);
   };
   const clickedHeight = clickedDancer !== -1 ? ( dancers[clickedDancer].height ? convertToFeetAndInches(dancers[clickedDancer].height) : {"feet": 6, "inches": 0}) : 0;
-  // console.log(clickedDancer ? clickedDancer : "no Clicked Dancer");
-  // console.log(clickedHeight);
+
   return (
     <Modal
       isVisible={visible}

@@ -43,11 +43,18 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [playing, setPlaying] = useState(false);
    const [muted, setMuted] = useState(false);
    const [soundRef, setSoundRef] = useState(new Audio.Sound());
-   // const { sound: playbackObject } = Audio.Sound.createAsync({uri: `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/audiofiles/aa495069-b878-4e9c-981a-578a8f4b3701/onlymp3.to - Rick Astley Never Gonna Give You Up Official Music Video -dQw4w9WgXcQ-192k-1697998991.mp3`});
-   // const soundRef = new Audio.Sound();
+
    const [audioURL, setAudioURL] = useState("")
    const windowWidth = Dimensions.get('window').width;
    const windowHeight = Dimensions.get('window').height;
+
+   const heightForTimeline =  Dimensions.get('window').height;
+   const bottomPosition =  (heightForTimeline * 0.1);
+   const [props, setProps] = useState([])
+
+   const [playing, setPlaying] = useState(false);
+
+
    
    const fetchTimelineLength = () => {
       const timelineLength = formations.reduce((accumulator, object) => {
@@ -58,6 +65,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
    const updateTimeline = (event) => {
       // setPosition(event.nativeEvent.locationX)
+
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
       soundRef.setPositionAsync(newSecond * 1000)
@@ -85,7 +93,6 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .eq("id", performanceOpen)
          .single()
          .then((r) => {
-            setCloudSettings(r.data.settings);
             r.data.formations[0].transition.durationSeconds = 0
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
@@ -93,6 +100,8 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             setDanceName(r.data.name);
             setAudioURL(r.data.soundCloudId)
             setLoading(false);
+            setProps(r.data.items)
+            setCloudSettings(r.data.settings);
          });
    }, []);
 
@@ -106,41 +115,88 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    useEffect(() => {
       fetchData();
 
+
       Dimensions.addEventListener('change', ({window}) => {
-         if (cloudSettings && timeline) {            
+         
+         if (cloudSettings && timeline) {  
+            const headerHeight =   Dimensions.get('window').height / 12
+            const timelineHeight =   Dimensions.get('window').height / 10
+            const maxScreenHeight = (Dimensions.get('window').height - headerHeight - timelineHeight) / 1.65;        
             const windowWidth = Dimensions.get('window').width;
-            const stageWidth = windowWidth * 3 / 4;
+           
+            const stageWidth = windowWidth * .925;
+            let stageHeight = stageWidth / cloudSettings.stageDimensions.width * cloudSettings.stageDimensions.height;
+            let newStageWidth = stageWidth
+   
+            if (stageHeight > maxScreenHeight){
+               stageHeight = maxScreenHeight - 10
+               newStageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width
+   
+            }
+            
+   
+
+   
+            
             if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
-               const squarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
+               const squarePixel = Math.ceil(newStageWidth / cloudSettings.stageDimensions.width)
                setPixelsPerSquare(squarePixel);
             } else {
-               const stageHeight = windowHeight * 1 / 2;
+
                const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
                setPixelsPerSquare(squarePixel);
             }
-   
-            const secondPixel = Math.ceil(stageWidth / timeline);
-            setPixelsPerSecond(secondPixel);
+
+            let secondPixel = Math.ceil(Dimensions.get('window').width * 0.05);
+            if (Dimensions.get('window').height > Dimensions.get('window').width){
+               secondPixel = Math.ceil(Dimensions.get('window').height * 0.05);
+            }
+            
+            setPixelsPerSecond(secondPixel); 
          }
       })
-   }, []);
+   }, []); 
 
    useEffect(() => {
-      // Calculate pixelsPerSquare and pixelsPerSecond based on screen size
-      if (cloudSettings) {          
-         if (timeline) {  
-            const stageWidth = windowWidth * .95;
-            const widthSquarePixel = Math.ceil(stageWidth / cloudSettings.stageDimensions.width)
-            const stageHeight = windowHeight * (1 - 149/375) * .95;
-            const heightSquarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
-            setPixelsPerSquare(Math.min(widthSquarePixel, heightSquarePixel));
 
-            const secondPixel = Math.ceil(stageWidth / timeline);
-            setPixelsPerSecond(secondPixel);
+      if (cloudSettings && timeline) {  
+         const headerHeight =   Dimensions.get('window').height / 12
+         const timelineHeight =   Dimensions.get('window').height / 10
+         const maxScreenHeight = (Dimensions.get('window').height - headerHeight - timelineHeight) / 1.65;         
+         const windowWidth = Dimensions.get('window').width;
+        
+         const stageWidth = windowWidth * .925;
+         let stageHeight = stageWidth / cloudSettings.stageDimensions.width * cloudSettings.stageDimensions.height;
+         let newStageWidth = stageWidth
+
+         if (stageHeight > maxScreenHeight){
+            stageHeight = maxScreenHeight - 10
+            newStageWidth = stageHeight / cloudSettings.stageDimensions.height * cloudSettings.stageDimensions.width
+ 
          }
+         
+
+
+         
+         if (cloudSettings.stageDimensions.width > cloudSettings.stageDimensions.height) {
+            const squarePixel = Math.ceil(newStageWidth / cloudSettings.stageDimensions.width)
+            setPixelsPerSquare(squarePixel);
+         } else {
+            const squarePixel = Math.ceil(stageHeight / cloudSettings.stageDimensions.height)
+            setPixelsPerSquare(squarePixel);
+         } 
+ 
+         let secondPixel = Math.ceil(Dimensions.get('window').width * 0.05); 
+         if (Dimensions.get('window').height > Dimensions.get('window').width){
+            secondPixel = Math.ceil(Dimensions.get('window').height * 0.05);
+         } 
+         
+         setPixelsPerSecond(secondPixel);
       }
+
       
-   }, [cloudSettings, timeline]);
+  }, [cloudSettings, timeline]);
+  
 
    useEffect(() => {
       fetchTimelineLength(); 
@@ -150,11 +206,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const modalHeight = Dimensions.get('window').height * ((horizontalMode ? 155/192: 25/30));
    let iconColor = "white";
 
-   return (
+   return ( 
+
       <>
-      {cloudSettings ?
+      {cloudSettings ?  
          <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, {flex:  horizontalMode === true || Dimensions.get('window').height < 1050 ? 0.03  : 0.02}]}>
                <TouchableOpacity style={styles.touchable} onPress={() => setPerformanceOpen(null)}>
                   <Svg width={Dimensions.get("window").width*0.03} height={Dimensions.get("window").width*0.03} viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="#dc2f79">
                      <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -192,6 +249,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      curSecond={curSecond}
                      pixelsPerSquare={pixelsPerSquare}
                      playing={playing}
+                     props={props}
                   />
                </View>
                   
@@ -212,13 +270,17 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      muted={muted}
                      setMuted={setMuted}
                   />
-                  <TouchableHighlight 
+               <ScrollView horizontal={true}
+               
+               >
+                   <TouchableHighlight 
                      style={[{width: pixelsPerSecond * timeline
                      }, styles.timeline,
                     ]}
                      underlayColor="transparent"
                      onPress={updateTimeline}
                   >
+
                      <View style={[{width: pixelsPerSecond * timeline,
                      }, styles.innerView]}>
                         <Timeline 
@@ -234,10 +296,12 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                            position={position}
                            setPosition={setPosition}
                            pixelsPerSecond={pixelsPerSecond}
-                           pixelsPerSquare={pixelsPerSquare}
                         />
                      </View>
                   </TouchableHighlight>
+
+               </ScrollView>
+                 
                </View>
             </View>  
          </View>
@@ -250,7 +314,7 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: "column",
-      width: "100%",
+      width: "100%", 
       height: "100%",
    },
    header: {
@@ -260,7 +324,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: Dimensions.get("window").height*0.05,
       paddingBottom: Dimensions.get("window").height*0.025,
-      flex: 2,
+      flex: 0.03,
       backgroundColor: "#262626",
       // You can add flex: 1 here if you want the header to be flexible
    },
@@ -271,9 +335,9 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
       borderRadius: 2,
       backgroundColor: '#171717',
-   },
+   }, 
    debug: {
-      flexDirection: "row",
+      flexDirection: "row", 
       borderRadius: 2,
    },
    stage: {
@@ -308,6 +372,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
    timeline: {
+      height: '10%',
       flexDirection: "row",
       alignItems: "flex-start",
       height: "100%",
