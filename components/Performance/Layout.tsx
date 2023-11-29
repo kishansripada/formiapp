@@ -79,6 +79,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
          .then((r) => {
 
             r.data.formations[0].transition.durationSeconds = 0
+            // sets prop widths to 1 by default
+            for(const prop of r.data.items){
+               prop.width = prop.width ? prop.width: 1;
+            }
             setFormations(r.data.formations);
             setSelectedFormation(r.data.formations[0]);
             setDancers(r.data.dancers);

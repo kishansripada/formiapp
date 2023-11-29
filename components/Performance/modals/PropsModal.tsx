@@ -8,7 +8,6 @@ export const PropsModal = ({ activeIndex, setActiveIndex, modalHeight, props}) =
   const visible = activeIndex === 3;
   const [clickedProp, setClickedProp] = useState(-1);
   const propBaseUrl = `https://dxtxbxkkvoslcrsxbfai.supabase.co/storage/v1/object/public/props/`;
-  // console.log(props);
   const activeColor = "#c5c5c5";
   const inactiveColor = '#525252'
   const propSvg = `<svg
@@ -57,10 +56,10 @@ export const PropsModal = ({ activeIndex, setActiveIndex, modalHeight, props}) =
                 onPress={() => setClickedProp(index)}
               >
                 <Text numberOfLines={1} ellipsizeMode="clip" style={[styles.propButtonText, {fontSize: textSize}]}>{`${prop.name}`}</Text>
-                <View style={[{width: iconSize, height: iconSize}, styles.iconStyle]}>
+                <View style={styles.iconStyle}>
                   <Image
                     resizeMode={"contain"}
-                    style={[styles.prop]}
+                    style={[{width: iconSize, height: iconSize}, styles.prop]}
                     source={{ uri: propBaseUrl + props[index]?.url}}
                     alt="image failed to load"
                     />
