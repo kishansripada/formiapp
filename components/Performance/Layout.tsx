@@ -82,9 +82,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
             setDanceName(r.data.name);
             setSoundCloudId(r.data.soundCloudId ? r.data.soundCloudId : "");
             setProps(r.data.items)
-            setLoading(false);
             setAudioURL(r.data.soundCloudId)
             setCloudSettings(r.data.settings);
+            setLoading(false);
+
         
          });
    }, []);

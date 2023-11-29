@@ -33,7 +33,8 @@ export const Timeline = ({ selectedFormation, cloudSettings, formations, perform
         
         >
  
-            {formations.map((formation) => (
+            {formations?.map((formation) => (
+              
               <View
                 key={formation.id}
                 style={[

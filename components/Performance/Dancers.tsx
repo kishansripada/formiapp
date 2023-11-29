@@ -119,7 +119,7 @@ export const Dancers = ({selectedFormation, setSelectedFormation, dancers, forma
                    
                      return (
                            <View 
-                              key={pos.id}
+                              key={pos.id + "ahh"}
                               style={[
                                  {
                                        left: coordsToPosition({x: pos.position.x, y: pos.position.y}).left,

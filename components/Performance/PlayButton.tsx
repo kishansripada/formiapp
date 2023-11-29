@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
         position: "relative",
         flexDirection: "row",
         alignItems: "center",
-        width: "100%",        
+        width: "100%",   
+        paddingLeft: 20    
       //   height: "3%",
     },
     icon: {
