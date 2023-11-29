@@ -60,7 +60,9 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
 
       const timelineWidth = (pixelsPerSecond * timeline)
       const newSecond = (event.nativeEvent.locationX / timelineWidth)  * timeline
-      soundRef.setPositionAsync(newSecond * 1000)
+      if (music) {
+         soundRef.setPositionAsync(newSecond * 1000)
+      }
       setLastStopped(newSecond)
       setSecond(newSecond);
  }

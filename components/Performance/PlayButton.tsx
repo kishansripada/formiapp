@@ -69,8 +69,6 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
          sound.setIsMutedAsync(!muted)
 
       }
-
-     
       setMuted(!muted)
    }
 
