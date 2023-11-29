@@ -7,7 +7,7 @@ import React from "react";
 
 
 
-export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline, playing, setPlaying, sound, muted, setMuted }) => {
+export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setStartTime, lastStopped, setLastStopped, timeline, playing, setPlaying, sound, muted, setMuted, music}) => {
    const [intervalID, setIntervalID] = useState(null);
    const playSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>`
    const pauseSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
@@ -20,7 +20,11 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
       setSecond((prevSecond) => {
          if (prevSecond >= timeline - .05) {
             setPlaying(false)
-            sound.pauseAsync()
+            if (music) {
+               sound.pauseAsync()
+            
+            }
+            
             return prevSecond
          } else {
             return newSecond
@@ -31,12 +35,18 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
    const handlePlay = async () => {
       if (playing) {
          setLastStopped(curSecond)
-         setStartTime(0)
-         await sound.pauseAsync()
+         setStartTime(0)    
+         if (music) {
+            await sound.pauseAsync()
+         } 
+         
       } else {
          setStartTime(Date.now())
          clearInterval(intervalID)
-         await sound.playAsync()
+         
+         if (music) {
+            await sound.playAsync()
+         } 
       }
       setPlaying(!playing)
    }
@@ -44,7 +54,7 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
    function toMINSECMS(secondsFloat) {
       const minutes = Math.floor(secondsFloat / 60);
       const seconds = Math.floor(secondsFloat % 60);
-      const milliseconds = Math.floor((secondsFloat % 1) * 100); // Get milliseconds
+      const milliseconds = Math.floor((secondsFloat % 1) * 10); // Get milliseconds
   
       // Padding each value with a zero if it's less than 10
       const paddedMinutes = minutes.toString().padStart(2, '0');
@@ -55,7 +65,12 @@ export const PlayButton = ({cloudSettings, curSecond, setSecond, startTime, setS
   }
 
   const handleMute = async () => {
-      sound.setIsMutedAsync(!muted)
+      if(music){
+         sound.setIsMutedAsync(!muted)
+
+      }
+
+     
       setMuted(!muted)
    }
 

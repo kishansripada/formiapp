@@ -45,6 +45,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
    const [soundRef, setSoundRef] = useState(new Audio.Sound());
    const [playing, setPlaying] = useState(false);
    const [muted, setMuted] = useState(false);
+   const [music, setMusic] = useState(false);
    const [audioURL, setAudioURL] = useState("")
    
    const fetchTimelineLength = () => {
@@ -95,9 +96,10 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
       try {
          await soundRef.loadAsync( { uri: finalURL } )
          setSoundRef(soundRef)
+         setMusic(true)
       } catch(error) {
          console.log(error)
-      }
+      }         
    }
 
    useEffect(() => {
@@ -259,6 +261,7 @@ export function Performance({ session, performanceOpen, setPerformanceOpen }) {
                      sound={soundRef}
                      muted={muted}
                      setMuted={setMuted}
+                     music={music}
                   />
                <ScrollView horizontal={true}
                
